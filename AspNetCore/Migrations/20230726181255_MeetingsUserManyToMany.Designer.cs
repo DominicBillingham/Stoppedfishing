@@ -4,6 +4,7 @@ using AspNetCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230726181255_MeetingsUserManyToMany")]
+    partial class MeetingsUserManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,7 @@ namespace AspNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("AspNetCore.Data.Models.User", b =>
@@ -57,7 +60,7 @@ namespace AspNetCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MeetingUser", b =>
@@ -72,12 +75,12 @@ namespace AspNetCore.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("MeetingUser", (string)null);
+                    b.ToTable("MeetingUser");
                 });
 
             modelBuilder.Entity("AspNetCore.Data.Models.User", b =>
                 {
-                    b.OwnsMany("AspNetCore.Data.Models.User.SimpleBlocks#AspNetCore.Data.Models.SimpleTimeBlock", "SimpleBlocks", b1 =>
+                    b.OwnsMany("AspNetCore.Data.Models.SimpleTimeBlock", "SimpleBlocks", b1 =>
                         {
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
@@ -98,7 +101,7 @@ namespace AspNetCore.Migrations
 
                             b1.HasIndex("UserId");
 
-                            b1.ToTable("SimpleTimeBlocks", (string)null);
+                            b1.ToTable("SimpleTimeBlocks");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

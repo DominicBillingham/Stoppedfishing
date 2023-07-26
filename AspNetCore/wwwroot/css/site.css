@@ -9,6 +9,12 @@ body {
     font-size: 30px;
     text-transform: lowercase;
     background-color: rgb(255, 222, 248);
+    margin: auto;
+}
+
+main {
+    justify-content: center;
+
 }
 
 .selected-block {
@@ -43,3 +49,4 @@ input {
     background-color: rgb(255, 200, 200);
     border-radius: 10px;
 }
+

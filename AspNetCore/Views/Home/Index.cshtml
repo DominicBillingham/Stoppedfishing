@@ -1,16 +1,25 @@
 ﻿
-<div class="row"> 
-    <h1 class="fw-bold">1. Choose an awesome username</h1>
-    <input type="text" placeholder="John Smith" class="col-4" id="UserName"/>
+
+<div class="col-6 d-inline-block">
+
+    <div class="row">
+        <h1 class="fw-bold">1. Choose an awesome username</h1>
+        <input type="text" placeholder="John Smith" id="UserName" />
+    </div>
+
+    <div class="row">
+        <h1 class="fw-bold">2. Choose a magical meeting name</h1>
+        <input type="text" placeholder="Movie Hangout" id="MeetingName" />
+    </div>
 </div>
 
-<div class="row">
-    <h1 class="fw-bold">2. Choose a magical meeting name</h1>
-    <input type="text" placeholder="Movie Hangout" class="col-4" id="MeetingName" />
+<div class="col-2 d-inline-block">
+
+    <button id="Submit" class="float-end">Create Meeting!</button>
+
 </div>
 
-
-<div class="row">
+<div class="col-6">
 
     <h1 class="fw-bold">3. Select some times to meet!</h1>
 
@@ -46,16 +55,16 @@
 
         </table>
 
-        <div class="col-2 mt-2 float-end">
-            <button id="submit" onlick="submit()">Create&nbspMeeting!</button>
-
-        </div>
 
     </div>
 
 
 
 </div>
+
+
+
+
 
 
 
@@ -69,28 +78,94 @@
 
     <script>
 
-        //Fetch the data from the Timeblock Selector Table
-        document.querySelector("#submit").onclick = function() {
+        window.onload = function() { 
+            CreateTable();
+            TableSelector();
+        }
+
+        function CreateTable() {
+
+            SimpleBlocks.forEach(function (timeBlock) {
+                var row = document.createElement("tr");
+                Days.forEach(function (day) {
+
+                    var td = document.createElement("td");
+                    td.setAttribute("timeblock", timeBlock.Number);
+                    td.setAttribute("day", day.Number);
+
+                    var text = document.createTextNode(timeBlock.Name);
+                    td.appendChild(text);
+
+                    row.appendChild(td);
+
+                });
+
+                var table = document.querySelector("#simpleTable");
+                table.appendChild(row)
+            });
+
+        }
+
+        function TableSelector() {
+
+            $('td').on('mousedown', function mouseState(e) {
+
+                if (e.type == "mousedown") {
+
+                    var td = $(this);
+
+                    if (td.hasClass("selected-block")) {
+                        td[0].classList.remove("selected-block");
+                    } else {
+                        td[0].classList.add("selected-block");
+                    }
+                }
+
+            });
+
+        }
+
+        $("#Submit").on("click", function() {
 
             var userName = $("#UserName").val();
 
             var data = {
-                UserName : userName
+                UserName: userName
             }
 
+            //Create User
             $.ajax({
                 type: "POST",
                 url: "user/create",
                 dataType: "json",
                 data: data,
-                success: function (response) {
-                    SubmitBlocks(response)
+                success: function (userId) {
+
+                    CreateMeeting()
+                    SubmitBlocks(userId)
+
                 },
                 error: function (response) {
                     alert(response.responseText)
                 }
 
             });
+
+            function CreateMeeting() {
+
+                var meetingName = $("#MeetingName").val();
+
+                var data = {
+                    "meetingName": meetingName,
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Meeting/Create",
+                    dataType: "json",
+                    data: data,
+                });
+            }
 
             function SubmitBlocks(userId) {
 
@@ -109,65 +184,16 @@
                     "blocks": blocks
                 };
 
-                console.log(data)
-
                 $.ajax({
                     type: "POST",
                     url: "home/UserBlocks",
                     dataType: "json",
                     data: data,
 
-                }).done(function () {
-
                 });
             }
 
-        }
-
-    </script>
-
-    <script>
-
-        //Creates the Timeblock Selector Table
-        window.onload = function CreateTable() {
-
-            SimpleBlocks.forEach(CreateTableRow);
-
-            $('td').on('mousedown', function mouseState(e) {
-
-                if (e.type == "mousedown") {
-
-                    var td = $(this);
-
-                    if (td.hasClass("selected-block")) {
-                        td[0].classList.remove("selected-block");
-                    } else {
-                        td[0].classList.add("selected-block");
-                    }
-                }
-
-            });
-        }
-        
-        function CreateTableRow(timeBlock) {
-
-            var row = document.createElement("tr");
-            Days.forEach(function(day) {
-
-                var td = document.createElement("td");
-                td.setAttribute("timeblock", timeBlock.Number);
-                td.setAttribute("day", day.Number);
-
-                var text = document.createTextNode(timeBlock.Name);
-                td.appendChild(text);
-
-                row.appendChild(td);
-
-            });
-
-            var table = document.querySelector("#simpleTable");
-            table.appendChild(row)
-        }
+        });
 
     </script>
 

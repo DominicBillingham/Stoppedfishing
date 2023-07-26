@@ -1,13 +1,23 @@
-﻿using AspNetCore.Data.Models;
+﻿using AspNetCore.Data;
+using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using StoppedFishing.Services;
 using System.Net;
 
 namespace AspNetCore.Controllers
 {
-    public class UserController : BaseController
+    public class UserController : Controller
     {
+        public ApplicationDbContext _context;
+        public IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _context = new ApplicationDbContext();
+            _userService = userService;
+        }
         public ActionResult Create(string UserName, string DisplayName)
         {
 
@@ -22,7 +32,7 @@ namespace AspNetCore.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            UserService.SetCurrentUser(user.Id);
+            _userService.SetCurrentUser(user.Id);
 
             return Ok(user.Id);
 
