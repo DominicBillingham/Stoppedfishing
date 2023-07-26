@@ -1,0 +1,45 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    font-family: 'Cute Font', cursive;
+    margin-bottom: 60px;
+    font-size: 30px;
+    text-transform: lowercase;
+    background-color: rgb(255, 222, 248);
+}
+
+.selected-block {
+    background-color: rgb(255, 142, 142);
+}
+
+td {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+button {
+    border-radius: 10px;
+    background-color: rgb(255, 142, 142);
+}
+
+a {
+    text-decoration: none;
+    color: palevioletred;
+}
+
+table {
+    border-spacing: 10px;
+    border-collapse:separate;
+}
+
+header {
+    background-color: rgb(255, 200, 200);
+}
+
+input {
+    background-color: rgb(255, 200, 200);
+    border-radius: 10px;
+}

@@ -1,0 +1,169 @@
+﻿
+<div class="row"> 
+    <h1 class="fw-bold">1. Choose a radical username</h1>
+    <input type="text" placeholder="John Smith" class="col-4" id="UserName"/>
+</div>
+
+
+<div class="row">
+
+    <h1 class="fw-bold">2. Select some times to meet!</h1>
+
+    <div class="d-inline-block text-center">
+
+        <table id="simpleTable">
+
+            <thead id="simpleTableHeader">
+                <tr>
+                    <th>
+                        Monday
+                    </th>
+                    <th>
+                        Tuesday
+                    </th>
+                    <th>
+                        Wednesday
+                    </th>
+                    <th>
+                        Thursday
+                    </th>
+                    <th>
+                        Friday
+                    </th>
+                    <th>
+                        Saturday
+                    </th>
+                    <th>
+                        Sunday
+                    </th>
+                </tr>
+            </thead>
+
+        </table>
+
+        <div class="col-2 mt-2 float-end">
+            <button id="submit" onlick="submit()">Create&nbspMeeting!</button>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+@*<div class="text-wrap d-inline-block col-5">
+    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+</div>
+*@
+
+@section Scripts {
+
+
+    <script>
+
+        //Fetch the data from the Timeblock Selector Table
+        document.querySelector("#submit").onclick = function() {
+
+            var userName = $("#UserName").val();
+
+            var data = {
+                UserName : userName
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "user/create",
+                dataType: "json",
+                data: data,
+                success: function (response) {
+                    SubmitBlocks(response)
+                },
+                error: function (response) {
+                    alert(response.responseText)
+                }
+
+            });
+
+            function SubmitBlocks(userId) {
+
+                var table = document.querySelector("#simpleTable");
+                var selected = table.getElementsByClassName("selected-block");
+                var blocks = [];
+
+                for (item of selected) {
+
+                    var timeblock = { "Day": item.getAttribute("day"), "SimpleBlock": item.getAttribute("timeblock") }
+                    blocks.push(timeblock);
+                }
+
+                var data = {
+                    "userId": userId,
+                    "blocks": blocks
+                };
+
+                console.log(data)
+
+                $.ajax({
+                    type: "POST",
+                    url: "home/UserBlocks",
+                    dataType: "json",
+                    data: data,
+
+                }).done(function () {
+
+                });
+            }
+
+        }
+
+    </script>
+
+    <script>
+
+        //Creates the Timeblock Selector Table
+        window.onload = function CreateTable() {
+
+            SimpleBlocks.forEach(CreateTableRow);
+
+            $('td').on('mousedown', function mouseState(e) {
+
+                if (e.type == "mousedown") {
+
+                    var td = $(this);
+
+                    if (td.hasClass("selected-block")) {
+                        td[0].classList.remove("selected-block");
+                    } else {
+                        td[0].classList.add("selected-block");
+                    }
+                }
+
+            });
+        }
+        
+        function CreateTableRow(timeBlock) {
+
+            var row = document.createElement("tr");
+            Days.forEach(function(day) {
+
+                var td = document.createElement("td");
+                td.setAttribute("timeblock", timeBlock.Number);
+                td.setAttribute("day", day.Number);
+
+                var text = document.createTextNode(timeBlock.Name);
+                td.appendChild(text);
+
+                row.appendChild(td);
+
+            });
+
+            var table = document.querySelector("#simpleTable");
+            table.appendChild(row)
+        }
+
+    </script>
+
+}

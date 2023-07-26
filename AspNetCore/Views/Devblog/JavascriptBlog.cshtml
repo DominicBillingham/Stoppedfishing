@@ -1,0 +1,41 @@
+﻿<h1>Someday I'll show off all my JavaScript Here'</h1>
+
+<div class="d-inline-block col-6">
+
+    <table id="myTable"></table>
+
+</div>
+
+<script>
+
+    //Datables Example
+
+    $.ajax({
+
+        url: "Home/GetAlbums"
+
+    }).done(function (data) {
+
+        console.log(data);
+
+        new DataTable('#myTable', {
+            data: data,
+            columns: [
+                {
+                    title: 'Album Id',
+                    data: 'AlbumId'
+                },
+                {
+                    title: 'Album Name',
+                    data: 'Name'
+                },
+                {
+                    title: 'Songs',
+                    data: 'Songs',
+                }
+            ]
+        });
+
+    });
+
+</script>
