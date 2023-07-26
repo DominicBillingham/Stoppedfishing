@@ -22,6 +22,8 @@ namespace AspNetCore.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
+            UserService.SetCurrentUser(user.Id);
+
             return Ok(user.Id);
 
         }
