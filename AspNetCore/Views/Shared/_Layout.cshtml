@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AspNetCore.styles.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 
@@ -34,8 +33,12 @@
                             <a class="nav-link text-dark" asp-page="/home/index">Availability</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/home/getalbums">Meetings</a>
+                            <a class="nav-link text-dark" href="/Meeting/Index">Meetings</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="currentUser" href="/user/signin/2">Login!</a>
+                        </li>
+                        
 
                     </ul>
                 </div>
@@ -58,6 +61,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/Enums.js" asp-append-version="true"></script>
+    <script src="~/js/UserHandler.js" asp-append-version="true"></script>
 
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 

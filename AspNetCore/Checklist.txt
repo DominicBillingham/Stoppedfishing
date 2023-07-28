@@ -1,0 +1,14 @@
+﻿Future Features:
+
+Validation on fields
+Error handling on server side
+Installing noty to inform users of mistakes.
+
+Add a Meetings Overview page
+Add a Availailbility Page
+
+Allow google login
+Allow for unix timestamps
+
+Add custom routes for 
+Naming Convetions

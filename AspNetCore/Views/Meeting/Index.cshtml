@@ -1,0 +1,38 @@
+﻿
+
+
+<table id="MeetingsTbl"></table>
+
+
+@section Scripts {
+
+
+    <script>
+
+        window.onload = function () {
+
+            $.ajax({
+
+                url: "/Meeting/GetUserMeetings"
+
+            }).done(function (data) {
+
+                console.log(data);
+
+                new DataTable('#MeetingsTbl', {
+                    data: data,
+                    columns: [
+                        {
+                            title: 'Meeting',
+                            data: 'Name'
+                        }
+                    ]
+                });
+
+            });
+
+        }
+
+    </script>
+
+}

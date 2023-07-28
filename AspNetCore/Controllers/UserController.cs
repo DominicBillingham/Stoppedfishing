@@ -37,5 +37,27 @@ namespace AspNetCore.Controllers
             return Ok(user.Id);
 
         }
+
+        public ActionResult SignIn(int Id)
+        {
+            var user = _context.Users.Find(Id);
+
+            if (user == null) 
+                return BadRequest("User not found!");
+
+            _userService.SetCurrentUser(user.Id);
+
+            return Redirect("~/Home/Index");
+
+        }
+
+        public ActionResult GetCurrentUserName() {
+            var user = _userService.GetCurrentUser();
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+            return Ok(user.UserName);
+        }
     }
 }
