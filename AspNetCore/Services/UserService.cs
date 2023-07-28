@@ -26,5 +26,11 @@ namespace StoppedFishing.Services
             var userId = _httpContext.Session.GetInt32("UserId");
             return _context.Users.Find(userId);
         }
+
+        public int? GetCurrentUserId()
+        {
+            HttpContext _httpContext = _httpContextAccessor.HttpContext;
+            return _httpContext.Session.GetInt32("UserId");
+        }
     }
 }

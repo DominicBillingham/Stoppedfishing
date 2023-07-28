@@ -7,5 +7,6 @@ namespace StoppedFishing.Services
     {
         public void SetCurrentUser(int userId);
         public User GetCurrentUser();
+        public int? GetCurrentUserId();
     }
 }

@@ -2,6 +2,7 @@
 using AspNetCore.Data;
 using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StoppedFishing.Services;
 
 namespace StoppedFishing.Controllers
@@ -28,9 +29,14 @@ namespace StoppedFishing.Controllers
             meeting.Name = MeetingName;
             _context.Meetings.Add(meeting);
 
-            var user = _userService.GetCurrentUser();
-            meeting.Users = new List<User>();
-            
+            var userId = _userService.GetCurrentUserId();
+            var user = _context.Users
+                .Include(user => user.Meetings)
+                .Single(user => user.Id == userId);
+
+            user.Meetings.Add(meeting);
+            _context.SaveChanges();
+
             return Ok();
         }
 

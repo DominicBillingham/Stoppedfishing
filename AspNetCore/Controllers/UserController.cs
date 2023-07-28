@@ -21,7 +21,7 @@ namespace AspNetCore.Controllers
         public ActionResult Create(string UserName, string DisplayName)
         {
 
-            if (UserName.Length < 4)
+            if (UserName == null || UserName.Length < 4)
             {
                 return BadRequest("Username is too short");
             }
