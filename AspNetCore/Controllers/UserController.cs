@@ -51,6 +51,19 @@ namespace AspNetCore.Controllers
 
         }
 
+        public ActionResult LogIn(string UserName)
+        {
+            var user = _context.Users.FirstOrDefault(user => user.UserName == UserName);
+
+            if (user == null)
+                return BadRequest("User not found!");
+
+            _userService.SetCurrentUser(user.Id);
+
+            return Redirect("~/Home/Index");
+
+        }
+
         public ActionResult GetCurrentUserName() {
             var user = _userService.GetCurrentUser();
             if (user == null)
