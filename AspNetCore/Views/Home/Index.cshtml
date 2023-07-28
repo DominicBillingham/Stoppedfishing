@@ -4,22 +4,20 @@
 
     <div class="row">
         <h1 class="fw-bold">1. Choose an awesome username</h1>
-        <input type="text" placeholder="John Smith" id="UserName" />
+        <input type="text" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
+        <button id="CreateUserBtn" class="float-end col-3">Continue</button>
     </div>
 
-    <div class="row">
+    <div class="row panel" id="MeetingPanel">
         <h1 class="fw-bold">2. Choose a magical meeting name</h1>
-        <input type="text" placeholder="Movie Hangout" id="MeetingName" />
+        <input type="text" placeholder="Movie Hangout" class="col-9 mb-2" id="MeetingName" />
+        <button id="CreateMeetingBtn" class="float-end col-3">Continue</button>
     </div>
-</div>
 
-<div class="col-2 d-inline-block">
-
-    <button id="Submit" class="float-end">Create Meeting!</button>
 
 </div>
 
-<div class="col-6">
+<div class="col-6 panel" id="TablePanel">
 
     <h1 class="fw-bold">3. Select some times to meet!</h1>
 
@@ -55,10 +53,13 @@
 
         </table>
 
+        <div class="col-4 d-inline-block">
+
+            <button id="Submit" class="float-end">Create Meeting!</button>
+
+        </div>
 
     </div>
-
-
 
 </div>
 
@@ -120,10 +121,19 @@
                         td[0].classList.add("selected-block");
                     }
                 }
-
+                    
             });
 
         }
+
+        $("#CreateUserBtn").on("click", function () {
+            $("#MeetingPanel").slideDown("slow");
+        });
+
+        $("#CreateMeetingBtn").on("click", function () {
+            $("#TablePanel").slideDown("slow");
+        });
+
 
         $("#Submit").on("click", function() {
 
