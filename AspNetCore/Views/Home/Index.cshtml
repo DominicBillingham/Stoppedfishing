@@ -1,6 +1,5 @@
 ﻿@model AspNetCore.Data.Models.User
 
-
 @if (Model == null)
 {
 
@@ -26,17 +25,27 @@
         </div>
 
     </div>
+
 } else
 {
     <div class="row">
 
-        <h1 class="fw-bold">Signed in as: @Model.UserName</h1>
-        <button id="ContinueAsUserBtn" class="float-end col-1">Continue</button>
-        <button id="SignOutBtn" class="float-end col-1">Sign Out</button>
+        <h1 class="fw-bold d-inline-block col-4">Signed in as: @Model.UserName</h1>
+
+        <div class="col-6">
+
+            <button id="ContinueAsUserBtn" class="col-4 d-inline-block">Continue</button>
+
+
+            <form class="d-inline-block col-4" method="post" asp-controller="User" asp-action="SignOut">
+
+                <button type="submit" class="col-12">Sign Out</button>
+
+            </form>
+        </div>
 
     </div>
 }
-
 
 <div class="row panel col-6" id="MeetingPanel">
 
@@ -46,10 +55,9 @@
 
 </div>
 
-
 <div class="col-6 panel" id="TablePanel">
 
-    <h1 class="fw-bold">3. Select some times to meet!</h1>
+    <h1 class="fw-bold">3. Click on all the times you are free</h1>
 
     <div class="d-inline-block text-center">
 
@@ -85,7 +93,7 @@
 
         <div class="col-4 d-inline-block">
 
-            <button id="Submit" class="float-end">Create Meeting!</button>
+            <button id="SubmitTimeblocksBtn" class="float-end">Create Meeting!</button>
 
         </div>
 
@@ -93,29 +101,7 @@
 
 </div>
 
-
-
-
-
 @section Scripts {
-
-
-    <script>
-
-        $("#CreateUserBtn").on("click", function () {
-            $("#MeetingPanel").slideDown("slow");
-        });
-
-        $("#ContinueAsUserBtn").on("click", function () {
-            $("#MeetingPanel").slideDown("slow");
-        });
-
-        $("#CreateMeetingBtn").on("click", function () {
-            $("#TablePanel").slideDown("slow");
-        });
-
-
-    </script>
 
     <script>
 
@@ -170,7 +156,28 @@
 
     <script>
 
-        $("#Submit").on("click", function () {
+        var _userId = null;
+
+        $("#CreateUserBtn").on("click", function () {
+            $("#MeetingPanel").slideDown("slow");
+            CreateUser();
+        });
+
+        $("#ContinueAsUserBtn").on("click", function () {
+            $("#MeetingPanel").slideDown("slow");
+        });
+
+        $("#CreateMeetingBtn").on("click", function () {
+            $("#TablePanel").slideDown("slow");
+            CreateMeeting();
+        });
+
+        $("#SubmitTimeblocksBtn").on("click", function () {
+            $("#TablePanel").slideDown("slow");
+            UpdateUserBlocks();
+        });
+
+        function CreateUser() {
 
             var userName = $("#UserName").val();
 
@@ -178,67 +185,64 @@
                 UserName: userName
             }
 
-            //Create User
             $.ajax({
                 type: "POST",
-                url: "user/create",
+                url: "User/CreateNewUser",
                 dataType: "json",
                 data: data,
+
                 success: function (userId) {
-
-                    CreateMeeting()
-                    SubmitBlocks(userId)
-
+                    _userId = userId;
                 },
+
                 error: function (response) {
                     alert(response.responseText)
                 }
 
             });
+        }
 
-            function CreateMeeting() {
+        function CreateMeeting() {
 
-                var meetingName = $("#MeetingName").val();
+            var meetingName = $("#MeetingName").val();
 
-                var data = {
-                    "meetingName": meetingName,
-                };
+            var data = {
+                "meetingName": meetingName,
+            };
 
-                $.ajax({
-                    type: "POST",
-                    url: "Meeting/Create",
-                    dataType: "json",
-                    data: data,
-                });
+            $.ajax({
+                type: "POST",
+                url: "Meeting/CreateMeeting",
+                dataType: "json",
+                data: data,
+            });
+        }
+
+        function UpdateUserBlocks() {
+
+            var table = document.querySelector("#simpleTable");
+            var selected = table.getElementsByClassName("selected-block");
+            var blocks = [];
+
+            for (item of selected) {
+
+                var timeblock = { "Day": item.getAttribute("day"), "SimpleBlock": item.getAttribute("timeblock") }
+                blocks.push(timeblock);
             }
 
-            function SubmitBlocks(userId) {
+            var data = {
+                "userId": _userId,
+                "blocks": blocks
+            };
 
-                var table = document.querySelector("#simpleTable");
-                var selected = table.getElementsByClassName("selected-block");
-                var blocks = [];
+            $.ajax({
+                type: "POST",
+                url: "User/UpdateUserTimeBlocks",
+                dataType: "json",
+                data: data,
 
-                for (item of selected) {
-
-                    var timeblock = { "Day": item.getAttribute("day"), "SimpleBlock": item.getAttribute("timeblock") }
-                    blocks.push(timeblock);
-                }
-
-                var data = {
-                    "userId": userId,
-                    "blocks": blocks
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: "home/UserBlocks",
-                    dataType: "json",
-                    data: data,
-
-                });
-            }
-
-        });
+            });
+        }
 
     </script>
 

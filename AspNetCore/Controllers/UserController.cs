@@ -35,9 +35,9 @@ namespace AspNetCore.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                _userService.SetCurrentUser(user.Id);
+                _userService.SetCurrentUserId(user.Id);
 
-                return Ok();
+                return Ok(user.Id);
 
             } catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace AspNetCore.Controllers
                     return BadRequest("User not found!");
                 }
 
-                _userService.SetCurrentUser(user.Id);
+                _userService.SetCurrentUserId(user.Id);
 
                 return Redirect("~/Home/Index");
 
@@ -73,8 +73,7 @@ namespace AspNetCore.Controllers
 
             try
             {
-                _userService.set
-
+                _userService.SignOutCurrentUser();
                 return Redirect("~/Home/Index");
 
             }

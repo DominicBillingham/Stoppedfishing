@@ -1,5 +1,6 @@
 ﻿
 <table id="MeetingsTbl"></table>
+<span id="WarningMessage"></span>
 
 @section Scripts {
 
@@ -10,14 +11,18 @@
 
             $.ajax({
 
-                url: "/Meeting/GetUserMeetings"
+                url: "/Meeting/GetUserMeetings",
+                error: function (response) {
+                    $("#WarningMessage").text(response.responseText)
+                }
 
             }).done(function (data) {
 
-                console.log(data);
+                console.log(data.response);
 
                 new DataTable('#MeetingsTbl', {
                     data: data,
+
                     columns: [
                         {
                             title: 'Meeting',

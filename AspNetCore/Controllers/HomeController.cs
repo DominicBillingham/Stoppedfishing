@@ -33,6 +33,29 @@ namespace AspNetCore.Controllers
 
         }
 
+        public void ClearData()
+        {
+            var Users = _context.Users.ToList();
+
+            foreach (var user in Users)
+            {
+                var SimpleTimeBlocks = user.SimpleBlocks.ToList();
+
+                foreach (var block in  SimpleTimeBlocks)
+                {
+                    user.SimpleBlocks.Remove(block);
+                    _context.SaveChanges();
+                }
+            }
+
+            _context.Users.RemoveRange(Users);
+
+            var Meetings = _context.Meetings.ToList();
+            _context.Meetings.RemoveRange(Meetings);
+
+            _context.SaveChanges();
+        }
+
     }
     
 }

@@ -88,7 +88,7 @@ namespace StoppedFishing.Controllers
 
                 if (user == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Sign in to be able to see your current meetings");
                 }
 
                 var meetings = _context.Meetings
@@ -97,6 +97,11 @@ namespace StoppedFishing.Controllers
                     {
                         x.Name
                     }).ToList();
+
+                if (meetings.Count == 0)
+                {
+                    return NotFound("You haven't got any meetings... yet!");
+                }
 
                 return Json(data: meetings);
             }
