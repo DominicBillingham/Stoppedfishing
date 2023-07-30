@@ -31,6 +31,8 @@
     <div class="row">
 
         <h1 class="fw-bold">Signed in as: @Model.UserName</h1>
+        <button id="ContinueBtn" class="float-end col-1">Continue</button>
+        <button id="SignOutBtn" class="float-end col-1">Sign Out</button>
 
     </div>
 }
@@ -159,6 +161,11 @@
         $("#CreateUserBtn").on("click", function () {
             $("#MeetingPanel").slideDown("slow");
         });
+
+        $("#ContinueBtn").on("click", function () {
+            $("#MeetingPanel").slideDown("slow");
+        });
+
 
         $("#CreateMeetingBtn").on("click", function () {
             $("#TablePanel").slideDown("slow");
