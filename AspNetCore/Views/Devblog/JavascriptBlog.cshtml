@@ -6,6 +6,32 @@
 
 </div>
 
+
+<li>
+    <a class="nav-link text-dark" data-bs-toggle="modal" data-bs-target="#LoginModal">Login</a>
+</li>
+<!-- Modal -->
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <form method="post" asp-controller="User" asp-action="LogIn">
+
+                    <input type="text" name="UserName" />
+                    <input type="submit" />
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <script>
 
     //Datables Example

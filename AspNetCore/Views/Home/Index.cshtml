@@ -1,21 +1,51 @@
-﻿
+﻿@model AspNetCore.Data.Models.User
 
-<div class="col-6 d-inline-block">
+
+@if (Model == null)
+{
 
     <div class="row">
-        <h1 class="fw-bold">1. Choose an awesome username</h1>
-        <input type="text" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
-        <button id="CreateUserBtn" class="float-end col-3">Continue</button>
-    </div>
 
-    <div class="row panel" id="MeetingPanel">
-        <h1 class="fw-bold">2. Choose a magical meeting name</h1>
-        <input type="text" placeholder="Movie Hangout" class="col-9 mb-2" id="MeetingName" />
-        <button id="CreateMeetingBtn" class="float-end col-3">Continue</button>
-    </div>
+        <div class="col-6">
+            <h1 class="fw-bold">1. Choose an awesome username</h1>
+            <input type="text" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
+            <button id="CreateUserBtn" class="float-end col-3">Continue</button>
+        </div>
 
+        <div class="col-6">
+
+            <h1 class="fw-bold">Or enter your username to sign in</h1>
+
+            <form method="post" asp-controller="User" asp-action="LogIn">
+
+                <input type="text" name="UserName" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
+                <button type="submit" id="SignInBtn" class="float-end col-3">Sign In</button>
+
+            </form>
+
+        </div>
+
+    </div>
+} else
+{
+    <div class="row">
+
+        <h1 class="fw-bold">Signed in as: @Model.UserName</h1>
+
+    </div>
+}
+
+
+<div class="row panel col-6" id="MeetingPanel">
+
+    <h1 class="fw-bold">2. Choose a magical meeting name</h1>
+    <input type="text" placeholder="Movie Hangout" class="col-9 mb-2" id="MeetingName" />
+    <button id="CreateMeetingBtn" class="float-end col-3">Continue</button>
 
 </div>
+
+
+
 
 <div class="col-6 panel" id="TablePanel">
 

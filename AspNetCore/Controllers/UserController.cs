@@ -47,7 +47,7 @@ namespace AspNetCore.Controllers
 
             _userService.SetCurrentUser(user.Id);
 
-            return Redirect("~/Home/Index");
+            return RedirectToAction("~/Home/Index");
 
         }
 

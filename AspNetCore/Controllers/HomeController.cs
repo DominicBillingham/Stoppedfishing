@@ -23,7 +23,8 @@ namespace AspNetCore.Controllers
         // GET: HomeController
         public ActionResult Index()
         {
-            return View();
+            var user = _userService.GetCurrentUser();
+            return View(user);
 
         }
 

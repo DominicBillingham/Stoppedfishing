@@ -30,6 +30,15 @@ TimeZoneService
 
 
 
+Style Guide:
+All functions start with a captial letter
+services and context to be stored in controllers with an _
+All JavaScript functions start with a captial letter
+Parameters to functions start with a lower case letter
+ID's will be capitilised an end with the element they are e.g SubmitUserBtn
+
+
+
 
 
 Future Features:

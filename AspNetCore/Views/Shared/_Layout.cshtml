@@ -53,10 +53,7 @@
                             <a class="nav-link text-dark" href="/Meeting/Index">Meetings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" id="currentUser" href="/user/signin/2">Login!</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" data-bs-toggle="modal" data-bs-target="#LoginModal">Login</a>
+                            <a class="nav-link text-dark" id="currentUser" href="/user/signin/2">Test login mushu</a>
                         </li>
                        
                     </ul>
@@ -70,28 +67,6 @@
             @RenderBody()
         </main>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <div class="modal-body">
-
-                    <form method="post" asp-controller="User" asp-action="LogIn">
-
-                        <input type="text" name="UserName" />
-                        <input type="submit" />
-
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 
     <footer class="border-top footer text-muted">
         <div class="container">
