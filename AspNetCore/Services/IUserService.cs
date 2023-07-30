@@ -5,8 +5,10 @@ namespace StoppedFishing.Services
 {
     public interface IUserService
     {
-        public void SetCurrentUser(int userId);
-        public User GetCurrentUser();
+        public void SetCurrentUserId(int userId);
         public int? GetCurrentUserId();
+        public User GetCurrentUser();
+        public void SignOutCurrentUser();
+
     }
 }

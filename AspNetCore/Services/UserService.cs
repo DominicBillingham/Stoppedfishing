@@ -8,29 +8,32 @@ namespace StoppedFishing.Services
     {
         private ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private HttpContext _httpContext;
 
         public UserService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _httpContext = _httpContextAccessor.HttpContext;
         }
 
-        public void SetCurrentUser(int userId)
+        public void SetCurrentUserId(int userId)
         {
-            HttpContext _httpContext = _httpContextAccessor.HttpContext;
             _httpContext.Session.SetInt32("UserId", userId);
+        }
+        public int? GetCurrentUserId()
+        {
+            return _httpContext.Session.GetInt32("UserId");
         }
         public User GetCurrentUser()
         {
-            HttpContext _httpContext = _httpContextAccessor.HttpContext;
-            var userId = _httpContext.Session.GetInt32("UserId");
+            var userId = GetCurrentUserId();
             return _context.Users.Find(userId);
         }
 
-        public int? GetCurrentUserId()
-        {
-            HttpContext _httpContext = _httpContextAccessor.HttpContext;
-            return _httpContext.Session.GetInt32("UserId");
+        public void SignOutCurrentUser() {
+            _httpContext.Session.Remove("UserId");
         }
+
     }
 }

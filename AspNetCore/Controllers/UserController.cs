@@ -68,6 +68,22 @@ namespace AspNetCore.Controllers
             }
 
         }
+        public IActionResult SignOut()
+        {
+
+            try
+            {
+                _userService.set
+
+                return Redirect("~/Home/Index");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
         public IActionResult GetCurrentUserName() {
 

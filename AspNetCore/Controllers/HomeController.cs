@@ -25,6 +25,7 @@ namespace AspNetCore.Controllers
             {
                 var user = _userService.GetCurrentUser();
                 return View(user);
+
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
