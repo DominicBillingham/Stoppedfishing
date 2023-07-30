@@ -7,7 +7,7 @@ using StoppedFishing.Services;
 
 namespace AspNetCore.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller 
     {
 
         public ApplicationDbContext _context;
@@ -19,33 +19,17 @@ namespace AspNetCore.Controllers
             _userService = userService;
         }
 
-
-        // GET: HomeController
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            var user = _userService.GetCurrentUser();
-            return View(user);
-
-        }
-
-        public ActionResult UserBlocks(int userId, List<SimpleTimeBlock> blocks)  
-        {
-
-            var user = _context.Users.Find(userId);
-
-            if (user == null) 
-            { 
-                return BadRequest(); 
-            }
-
-            foreach (var block in blocks)
+            try
             {
-                user.SimpleBlocks.Add(block);
+                var user = _userService.GetCurrentUser();
+                return View(user);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            _context.SaveChanges(); 
-
-            return Ok("worked");
         }
 
     }

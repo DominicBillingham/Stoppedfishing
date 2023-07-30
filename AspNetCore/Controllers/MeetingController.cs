@@ -24,59 +24,86 @@ namespace StoppedFishing.Controllers
             return View();
         }
 
-        public IActionResult Create(string MeetingName) {
+        public IActionResult CreateMeeting(string meetingName) {
 
-            var meeting = new Meeting();
-            meeting.Name = MeetingName;
-            _context.Meetings.Add(meeting);
+            try
+            {
 
-            var userId = _userService.GetCurrentUserId();
-            var user = _context.Users
-                .Include(user => user.Meetings)
-                .Single(user => user.Id == userId);
+                var meeting = new Meeting();
+                meeting.Name = meetingName;
+                _context.Meetings.Add(meeting);
 
-            user.Meetings.Add(meeting);
-            _context.SaveChanges();
+                var userId = _userService.GetCurrentUserId();
+                var user = _context.Users
+                    .Include(user => user.Meetings)
+                    .Single(user => user.Id == userId);
 
-            return Ok();
-        }
+                user.Meetings.Add(meeting);
+                _context.SaveChanges();
 
-        public IActionResult Join(int Id)
-        {
-            var meeting = _context.Meetings
-                .Include(meet => meet.Users)
-                .Single(meet => meet.Id == Id);
+                return Ok();
 
-            var user = _userService.GetCurrentUser();
-
-            if (meeting == null || user == null) {
-                return BadRequest("Meeting or User not found");
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            meeting.Users.Add(user);
+        }
 
-            _context.SaveChanges();
+        public IActionResult JoinMeeting(int id)
+        {
+            try
+            {
 
-            return Ok();
+                var meeting = _context.Meetings
+                    .Include(meet => meet.Users)
+                    .Single(meet => meet.Id == id);
+
+                var user = _userService.GetCurrentUser();
+
+                if (meeting == null || user == null)
+                {
+                    return BadRequest("Meeting or User not found");
+                }
+
+                meeting.Users.Add(user);
+
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         public IActionResult GetUserMeetings()
         {
-            var user = _userService.GetCurrentUser();
 
-            if (user == null)
+            try
             {
-                return BadRequest();
-            }
+                var user = _userService.GetCurrentUser();
 
-            var meetings = _context.Meetings
-                .Where(meet => meet.Users.Contains(user))
-                .Select(x => new
+                if (user == null)
                 {
-                    x.Name
-                }).ToList();
-               
-            return Json (data : meetings);
+                    return BadRequest();
+                }
+
+                var meetings = _context.Meetings
+                    .Where(meet => meet.Users.Contains(user))
+                    .Select(x => new
+                    {
+                        x.Name
+                    }).ToList();
+
+                return Json(data: meetings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
           
         }
     }

@@ -18,59 +18,105 @@ namespace AspNetCore.Controllers
             _context = context;
             _userService = userService;
         }
-        public ActionResult Create(string UserName, string DisplayName)
+
+        public IActionResult CreateNewUser(string userName, string displayName)
         {
 
-            if (UserName == null || UserName.Length < 4)
+            try
             {
-                return BadRequest("Username is too short");
+                if (userName == null || userName.Length < 4)
+                {
+                    return BadRequest("Username is too short");
+                }
+
+                var user = new User();
+                user.UserName = userName;
+                user.DisplayName = displayName ?? userName;
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                _userService.SetCurrentUser(user.Id);
+
+                return Ok();
+
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            var user = new User();
-            user.UserName = UserName;
-            user.DisplayName = DisplayName ?? UserName;
-            _context.Users.Add(user);
-            _context.SaveChanges();
-
-            _userService.SetCurrentUser(user.Id);
-
-            return Ok(user.Id);
-
         }
 
-        public ActionResult SignIn(int Id)
+        public IActionResult LogIn(string userName)
         {
-            var user = _context.Users.Find(Id);
 
-            if (user == null) 
-                return BadRequest("User not found!");
-
-            _userService.SetCurrentUser(user.Id);
-
-            return RedirectToAction("~/Home/Index");
-
-        }
-
-        public ActionResult LogIn(string UserName)
-        {
-            var user = _context.Users.FirstOrDefault(user => user.UserName == UserName);
-
-            if (user == null)
-                return BadRequest("User not found!");
-
-            _userService.SetCurrentUser(user.Id);
-
-            return Redirect("~/Home/Index");
-
-        }
-
-        public ActionResult GetCurrentUserName() {
-            var user = _userService.GetCurrentUser();
-            if (user == null)
+            try
             {
-                return BadRequest("User not found");
+                var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
+
+                if (user == null)
+                {
+                    return BadRequest("User not found!");
+                }
+
+                _userService.SetCurrentUser(user.Id);
+
+                return Redirect("~/Home/Index");
+
+            } catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
             }
-            return Ok(user.UserName);
+
         }
+
+        public IActionResult GetCurrentUserName() {
+
+            try
+            {
+                var user = _userService.GetCurrentUser();
+                if (user == null)
+                {
+                    return BadRequest("User not found");
+                }
+                return Ok(user.UserName);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        public IActionResult UpdateUserTimeBlocks(int userId, List<SimpleTimeBlock> blocks)
+        {
+            try
+            {
+                var user = _context.Users.Find(userId);
+
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
+                user.SimpleBlocks = new List<SimpleTimeBlock>();
+
+                foreach (var block in blocks)
+                {
+                    user.SimpleBlocks.Add(block);
+                }
+
+                _context.SaveChanges();
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
