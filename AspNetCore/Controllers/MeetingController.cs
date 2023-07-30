@@ -13,9 +13,9 @@ namespace StoppedFishing.Controllers
         public ApplicationDbContext _context;
         public IUserService _userService;
 
-        public MeetingController(IUserService userService)
+        public MeetingController(ApplicationDbContext context, IUserService userService)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
             _userService = userService;
         }
 

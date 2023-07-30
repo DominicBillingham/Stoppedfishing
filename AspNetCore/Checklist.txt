@@ -1,4 +1,38 @@
-﻿Future Features:
+﻿
+Code Refactor
+
+
+Use Cases:
+Creating a meeting (no account)
+Create a meeitng (an account)
+Joining a meeting (no accunt)
+Joining a meeting (An account)
+
+HomeController
+- Load
+
+
+MeetingController
+- Create meeting (page)
+- Join meeting (page)
+
+UserController
+- Sign In
+- Sign Out
+
+
+UserService
+- SetCurrentUser
+- GetCurrentUser
+- GetCurrentUserId
+
+TimeZoneService
+
+
+
+
+
+Future Features:
 
 Validation on fields
 Error handling on server side

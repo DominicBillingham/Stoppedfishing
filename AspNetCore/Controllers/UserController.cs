@@ -13,9 +13,9 @@ namespace AspNetCore.Controllers
         public ApplicationDbContext _context;
         public IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(ApplicationDbContext context, IUserService userService)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
             _userService = userService;
         }
         public ActionResult Create(string UserName, string DisplayName)

@@ -13,9 +13,9 @@ namespace AspNetCore.Controllers
         public ApplicationDbContext _context;
         public IUserService _userService;
 
-        public HomeController(IUserService userService)
+        public HomeController(ApplicationDbContext context, IUserService userService)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
             _userService = userService;
         }
 
