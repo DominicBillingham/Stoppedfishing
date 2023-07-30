@@ -11,7 +11,7 @@
             <button id="CreateUserBtn" class="float-end col-3">Continue</button>
         </div>
 
-        <div class="col-6">
+        <div class="col-6" id="SignInPanel">
 
             <h1 class="fw-bold">Or enter your username to sign in</h1>
 
@@ -47,11 +47,15 @@
     </div>
 }
 
-<div class="row panel col-6" id="MeetingPanel">
+<div class="row panel" id="MeetingPanel">
 
-    <h1 class="fw-bold">2. Choose a magical meeting name</h1>
-    <input type="text" placeholder="Movie Hangout" class="col-9 mb-2" id="MeetingName" />
-    <button id="CreateMeetingBtn" class="float-end col-3">Continue</button>
+    <div class="col-6">
+
+        <h1 class="fw-bold">2. Choose a magical meeting name</h1>
+        <input type="text" placeholder="Movie Hangout" class="col-9 mb-2" id="MeetingName" />
+        <button id="CreateMeetingBtn" class="float-end col-3">Continue</button>
+
+    </div>
 
 </div>
 
@@ -160,6 +164,7 @@
 
         $("#CreateUserBtn").on("click", function () {
             $("#MeetingPanel").slideDown("slow");
+            $("#SignInPanel").slideUp("slow");
             CreateUser();
         });
 
@@ -187,7 +192,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "User/CreateNewUser",
+                url: "/User/CreateNewUser",
                 dataType: "json",
                 data: data,
 
@@ -212,7 +217,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "Meeting/CreateMeeting",
+                url: "/Meeting/CreateMeeting",
                 dataType: "json",
                 data: data,
             });
@@ -237,11 +242,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "User/UpdateUserTimeBlocks",
+                url: "/User/UpdateUserTimeBlocks",
                 dataType: "json",
                 data: data,
-
-            });
+            }).done(function () {
+                //alert("success");
+            })
         }
 
     </script>

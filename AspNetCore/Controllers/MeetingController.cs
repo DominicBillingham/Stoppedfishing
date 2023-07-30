@@ -41,7 +41,7 @@ namespace StoppedFishing.Controllers
                 user.Meetings.Add(meeting);
                 _context.SaveChanges();
 
-                return Ok();
+                return Ok("Meeting created");
 
             } catch (Exception ex)
             {

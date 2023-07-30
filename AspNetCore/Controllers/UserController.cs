@@ -124,7 +124,8 @@ namespace AspNetCore.Controllers
 
                 _context.SaveChanges();
 
-                return Ok();
+                return RedirectToAction("Index", "Meeting");
+                //return Ok();
 
             }
             catch (Exception ex)
