@@ -1,0 +1,32 @@
+﻿@model AspNetCore.Data.Models.Meeting
+
+<h1 class="fw-bold">Meeting - @Model.Name</h1>
+
+<h2>Users</h2>
+
+@foreach (var user in Model.Users)
+{
+    <h4>-@user.UserName</h4>
+}
+
+<h2>Possible Meeting Times</h2>
+<h4 id="MeetingTimeText"></h4>
+@section Scripts {
+
+    <script>
+
+        $.ajax({
+
+            url: "/Meeting/FindMeetingTime/" + @Model.Id,
+
+        }).done(function (data) {
+
+            console.log(data);
+
+            $("#MeetingTimeText").text(data.Day + " " + data.Block);
+
+
+        });
+
+    </script>
+}

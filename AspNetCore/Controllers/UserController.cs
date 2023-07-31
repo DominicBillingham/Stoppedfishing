@@ -124,7 +124,7 @@ namespace AspNetCore.Controllers
 
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Meeting");
+                return Redirect("~/Meeting/Index");
                 //return Ok();
 
             }

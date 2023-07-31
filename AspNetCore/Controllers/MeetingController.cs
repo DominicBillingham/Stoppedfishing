@@ -1,10 +1,12 @@
 ﻿using AspNetCore.Controllers;
 using AspNetCore.Data;
+using AspNetCore.Data.Enums;
 using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using StoppedFishing.Services;
+using static System.Net.WebRequestMethods;
 
 namespace StoppedFishing.Controllers
 {
@@ -70,7 +72,8 @@ namespace StoppedFishing.Controllers
 
                 _context.SaveChanges();
 
-                return Ok();
+                return Redirect("~/Meeting/Index");
+
             }
             catch (Exception ex)
             {
@@ -95,7 +98,8 @@ namespace StoppedFishing.Controllers
                     .Where(meet => meet.Users.Contains(user))
                     .Select(x => new
                     {
-                        x.Name
+                        x.Name,
+                        x.Id
                     }).ToList();
 
                 if (meetings.Count == 0)
@@ -103,13 +107,91 @@ namespace StoppedFishing.Controllers
                     return NotFound("You haven't got any meetings... yet!");
                 }
 
-                return Json(data: meetings);
+                var meetingsUpdate = meetings.Select(x => new
+                {
+                    MeetingLink = $"<a href='/Meeting/MeetingDetails/{x.Id}'>{x.Name}</a>",
+                    InviteLink = "https://localhost:44349/Meeting/JoinMeeting/" + x.Id
+                });
+
+                return Json(data: meetingsUpdate);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
           
+        }
+
+        public IActionResult MeetingDetails(int id)
+        {
+            try
+            {
+                var meeting = _context.Meetings
+                    .Include(meet => meet.Users)
+                    .Single(meet => meet.Id == id);
+
+                if (meeting == null)
+                {
+                    return BadRequest("Meeting not found");
+                }
+
+                return View(meeting);
+
+
+            } catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public IActionResult FindMeetingTime(int id)
+        {
+            try
+            {
+                var meeting = _context.Meetings
+                    .Include(meet => meet.Users)
+                    .Single(meet => meet.Id == id);
+
+                if (meeting == null)
+                {
+                    return BadRequest("Meeting not found");
+                }
+
+                var dayValues = Enum.GetValues(typeof(Days)).Cast<Days>().ToList().Select(e => (int)e);
+                var simpleBlockValues = Enum.GetValues(typeof(SimpleBlocks)).Cast<SimpleBlocks>().ToList().Select(e => (int)e);
+
+                List<SimpleTimeBlock> allMeetingBlocks = new List<SimpleTimeBlock>();
+
+                foreach(var user in meeting.Users)
+                {
+                    allMeetingBlocks.AddRange(user.SimpleBlocks);
+                }
+
+                var meetingTime = allMeetingBlocks.Select(x => new { 
+                    x.Day,
+                    x.SimpleBlock
+                });
+
+                var count = meetingTime
+                    .GroupBy(e => e)
+                    .Where(e => e.Count() == 2)
+                    .Select(e => e.First()).First();
+
+                var data = new
+                {
+                    Day = count.Day.ToString(),
+                    Block = count.SimpleBlock.ToString()
+
+                };
+
+                return Json(data: data);
+                //return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }
