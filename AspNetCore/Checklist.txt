@@ -1,36 +1,22 @@
 ﻿
-Code Refactor
-
-
-Use Cases:
-Creating a meeting (no account)
-Create a meeitng (an account)
-Joining a meeting (no accunt)
-Joining a meeting (An account)
-
-HomeController
-- Load
-
-
-MeetingController
-- Create meeting (page)
-- Join meeting (page)
-
-UserController
-- Sign In
-- Sign Out
-
-
-UserService
-- SetCurrentUser
-- GetCurrentUser
-- GetCurrentUserId
-
-TimeZoneService
 
 
 
-Style Guide:
+
+- - - - Use Cases
+
+User No Account, Create Meeting
+1. User opens website without a join link
+2. Creates an account, chooses their availability, creates a meeintg
+3. Taken to the meeting page, and gets an invite link
+
+User No Account, Join Meeting
+1. User opens website with a join link
+2. Creates an account, and chooses their availability
+3. Taken to the meeting details page
+
+
+- - - - Style Guide
 All functions start with a captial letter
 services and context to be stored in controllers with an _
 All JavaScript functions start with a captial letter
@@ -38,10 +24,7 @@ Parameters to functions start with a lower case letter
 ID's will be capitilised an end with the element they are e.g SubmitUserBtn
 
 
-
-
-
-Future Features:
+- - - - Future Features:
 
 Validation on fields
 Error handling on server side
