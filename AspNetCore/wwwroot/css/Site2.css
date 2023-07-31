@@ -1,47 +1,24 @@
-/*
-    Body
-    background-color: rgb(255, 240, 240);
-
-    Header, Inputs
-    background-color: rgb(255, 200, 200);
-
-    Buttons
-    background-color: rgb(255, 142, 142);
-
-
-*/
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    font-family: 'Staatliches', cursive;
+    font-family: 'Cute Font', cursive;
+/*    font-family: 'Roboto Condensed', sans-serif;*/
     margin-bottom: 60px;
-    font-size: 24px;
+    font-size: 30px;
+    text-transform: lowercase;
+    background-color: rgb(255, 222, 248);
+    color: palevioletred; 
     margin: auto;
-    background-color: rgb(255, 240, 240);
 }
 
 main {
     justify-content: center;
 
 }
-
-h2 {
-    color: palevioletred;
-}
-
-thead {
-    color: #6c757d;
-}
-
-
-
-
-
-
 
 .selected-block {
     background-color: rgb(255, 142, 142);
@@ -53,6 +30,7 @@ td {
 }
 
 button {
+    border-radius: 10px;
     background-color: rgb(255, 142, 142);
 }
 
@@ -72,14 +50,9 @@ header {
 
 input {
     background-color: rgb(255, 200, 200);
-    padding-left: 10px;
+    border-radius: 10px;
 }
 
 .panel {
     display: none;
 }
-
-.rounded {
-    border-radius: 8px;
-}
-

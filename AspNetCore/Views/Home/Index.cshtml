@@ -1,17 +1,17 @@
 ﻿
 <div class="row">
 
-    <div class="col-6">
-        <h1 class="fw-bold">1. Choose an awesome username</h1>
-        <input type="text" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
-        <button id="CreateUserBtn" class="float-end col-3">Continue</button>
+    <div class="col-6 mb-2">
+        <h2 class="fw-bold">1. Choose an awesome username</h2>
+        <input type="text" placeholder="John Smith" class="col-8 rounded" id="UserName" />
+        <button id="CreateUserBtn" class="col-3 rounded ml-4">Continue</button>
     </div>
 
 </div>
 
-<div class="col-6 panel" id="TablePanel">
+<div class="col-6 panel mb-2" id="TablePanel">
 
-    <h1 class="fw-bold">2. Click on all the times you are free</h1>
+    <h2 class="fw-bold">2. Click on all the times you are free</h2>
 
     <div class="d-inline-block text-center">
 
@@ -45,9 +45,9 @@
 
         </table>
 
-        <div class="col-4 d-inline-block">
+        <div>
 
-            <button id="SubmitTimeblocksBtn" class="float-end">Continue</button>
+            <button id="SubmitTimeblocksBtn" class="rounded col-2">Continue</button>
 
         </div>
 
@@ -61,9 +61,9 @@
 
         <form method="post" asp-controller="Meeting" asp-action="CreateMeeting">
 
-            <h1 class="fw-bold">3. Choose a magical meeting name</h1>
-            <input type="text" name="meetingName" placeholder="Movie Hangout" class="col-9 mb-2" />
-            <button type="submit" class="float-end col-3">Create Meeting!</button>
+            <h2 class="fw-bold">3. Choose a magical meeting name</h2>
+            <input type="text" name="meetingName" placeholder="Movie Hangout" class="col-8 mb-2" />
+            <button type="submit" class="rounded ml-4 col-3">Create Meeting</button>
 
          </form>
 
