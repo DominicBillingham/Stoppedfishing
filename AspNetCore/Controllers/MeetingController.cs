@@ -44,7 +44,8 @@ namespace StoppedFishing.Controllers
                 user.Meetings.Add(meeting);
                 _context.SaveChanges();
 
-                return Ok("Meeting created");
+                //return Ok("Meeting created");
+                return RedirectToAction("MeetingDetails", new { id = meeting.Id });
 
             } catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace StoppedFishing.Controllers
 
                 _context.SaveChanges();
 
-                return Redirect("~/Meeting/Index");
+                return RedirectToAction("MeetingDetails", new { id = meeting.Id });
 
             }
             catch (Exception ex)
@@ -197,10 +198,10 @@ namespace StoppedFishing.Controllers
 
         private String GenerateToken()
         {
-            var allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             var random = new Random();
             var resultToken = new string(
-               Enumerable.Repeat(allChar, 4)
+               Enumerable.Repeat(allChar, 6)
                .Select(token => token[random.Next(token.Length)]).ToArray());
 
             string authToken = resultToken.ToString();

@@ -1,6 +1,14 @@
 ﻿@model AspNetCore.Data.Models.Meeting
 
+@{
+    var meetingLink = "https://localhost:44349/Meeting/MeetingDetails/" + Model.Id;
+    var inivteLink = "https://localhost:44349/Home/Join/" + Model.Id;
+}
+
+
 <h1 class="fw-bold">Meeting - @Model.Name</h1>
+<h2>Meeting link - @meetingLink</h2>
+<h2>Invite link - @inivteLink</h2>
 
 <h2>Users</h2>
 
@@ -15,9 +23,10 @@
 
     <script>
 
-        $.ajax({
+        var meetingId = '@Html.Raw(Model.Id)';
 
-            url: "/Meeting/FindMeetingTime/" + @Model.Id,
+        $.ajax({
+            url: "/Meeting/FindMeetingTime/" + meetingId
 
         }).done(function (data) {
 

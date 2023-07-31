@@ -37,8 +37,14 @@ namespace AspNetCore.Controllers
         {
             try
             {
-                var user = _userService.GetCurrentUser();
-                return View(user);
+                var meeting = _context.Meetings.Find(id);
+
+                if (meeting == null)
+                {
+                    return BadRequest("Meeting not found!");
+                }
+
+                return View(meeting);
 
             }
             catch (Exception ex)
