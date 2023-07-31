@@ -2,23 +2,29 @@
 
 @{
     var meetingLink = "https://localhost:44349/Meeting/MeetingDetails/" + Model.Id;
-    var inivteLink = "https://localhost:44349/Home/Join/" + Model.Id;
+    var inviteLink = "https://localhost:44349/Home/Join/" + Model.Id;
 }
 
 
-<h1 class="fw-bold">Meeting - @Model.Name</h1>
-<h2>Meeting link - @meetingLink</h2>
-<h2>Invite link - @inivteLink</h2>
+<a href="@inviteLink">
 
-<h2>Users</h2>
+    <h1 class="fw-bold">@Model.Name - Click to join in</h1>
 
+</a>
+
+
+<h2 class="mb-0">@meetingLink</h2>
+<p class="smalltext">Share this link with your friends so they can join</p>
+
+<h2 class="mb-0">Users</h2>
 @foreach (var user in Model.Users)
 {
-    <h4>-@user.UserName</h4>
+    <span class="smalltext">@user.UserName, </span>
 }
 
 <h2>Possible Meeting Times</h2>
-<h4 id="MeetingTimeText"></h4>
+<span id="MeetingTimeText"></span>
+
 @section Scripts {
 
     <script>
