@@ -19,10 +19,10 @@
 <h2 class="mb-0">Users</h2>
 @foreach (var user in Model.Users)
 {
-    <span class="smalltext">@user.UserName, </span>
+    <span>@user.UserName, </span>
 }
 
-<h2>Possible Meeting Times</h2>
+<h2 class="mb-0">Possible Meeting Times</h2>
 <span id="MeetingTimeText"></span>
 
 @section Scripts {
@@ -37,8 +37,13 @@
         }).done(function (data) {
 
             console.log(data);
+            var tempString = "";
 
-            $("#MeetingTimeText").text(data.Day + " " + data.Block);
+            data.forEach(function (item) {
+                tempString = tempString + item.Day + " - " + item.SimpleBlock + ", ";
+            })
+
+            $("#MeetingTimeText").text(tempString);
 
 
         });

@@ -158,9 +158,6 @@ namespace StoppedFishing.Controllers
                     return BadRequest("Meeting not found");
                 }
 
-                var dayValues = Enum.GetValues(typeof(Days)).Cast<Days>().ToList().Select(e => (int)e);
-                var simpleBlockValues = Enum.GetValues(typeof(SimpleBlocks)).Cast<SimpleBlocks>().ToList().Select(e => (int)e);
-
                 List<SimpleTimeBlock> allMeetingBlocks = new List<SimpleTimeBlock>();
 
                 foreach(var user in meeting.Users)
@@ -169,24 +166,19 @@ namespace StoppedFishing.Controllers
                 }
 
                 var meetingTime = allMeetingBlocks.Select(x => new { 
-                    x.Day,
-                    x.SimpleBlock
+                    Day = x.Day.ToString(),  
+                    SimpleBlock = x.SimpleBlock.ToString(),
                 });
 
-                var count = meetingTime
+                var userCount = meeting.Users.Count();
+
+                var matchingBlocks = meetingTime
                     .GroupBy(e => e)
-                    .Where(e => e.Count() == 2)
-                    .Select(e => e.First()).First();
+                    .Where(e => e.Count() == userCount)
+                    .Select(e => e.First())
+                    .ToList();
 
-                var data = new
-                {
-                    Day = count.Day.ToString(),
-                    Block = count.SimpleBlock.ToString()
-
-                };
-
-                return Json(data: data);
-                //return Ok();
+                return Json(data: matchingBlocks);
 
             }
             catch (Exception ex)

@@ -1,18 +1,18 @@
 ﻿@model AspNetCore.Data.Models.Meeting
 
-<div class="row">
+<div class="row mb-4">
 
     <div class="col-6">
-        <h1 class="fw-bold">1. Choose an awesome username</h1>
-        <input type="text" placeholder="John Smith" class="col-9 mb-2" id="UserName" />
-        <button id="CreateUserBtn" class="float-end col-3">Continue</button>
+        <h2 class="fw-bold">1. Choose an awesome username</h2>
+        <input type="text" placeholder="John Smith" class="col-8 mb-2 rounded" id="UserName" />
+        <button id="CreateUserBtn" class="ml-4 col-3 rounded">Continue</button>
     </div>
 
 </div>
 
-<div class="col-6 panel" id="TablePanel">
+<div class="col-9 panel mb-4" id="TablePanel">
 
-    <h1 class="fw-bold">2. Click on all the times you are free</h1>
+    <h2 class="fw-bold">2. Click on all the times you are free</h2>
 
     <div class="d-inline-block text-center">
 
@@ -46,24 +46,24 @@
 
         </table>
 
-        <div class="col-6">
-
-            <button class="d-inline-block" id="JoinMeetingBtn">Add times!</button>
-
-            <form class="d-inline-block" method="post" asp-controller="Meeting" asp-action="JoinMeeting">
-
-                <input type="hidden" name="id" value="@Model.Id" />
-                <button class="d-inline-block">Join Meeting!</button>
-
-            </form>
-
-
-        </div>
+        <button class="d-inline-block rounded" id="UpdateUserBlocksBtn">Update</button>
 
     </div>
 
 </div>
 
+<div class="panel col-6" id="FormPanel">
+
+    <h2 class="fw-bold">3. Check your times and then click join</h2>
+
+    <form class="d-inline-block ml-4" method="post" asp-controller="Meeting" asp-action="JoinMeeting">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button class="d-inline-block rounded">Join Meeting</button>
+
+    </form>
+
+</div>
 
 
 
@@ -129,8 +129,10 @@
             CreateUser();
         });
 
-        $("#JoinMeetingBtn").on("click", function () {
+        $("#UpdateUserBlocksBtn").on("click", function () {
+            $("#FormPanel").slideDown("slow");
             UpdateUserBlocks();
+
         });
 
 
