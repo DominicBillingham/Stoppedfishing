@@ -33,6 +33,21 @@ namespace AspNetCore.Controllers
 
         }
 
+        public IActionResult Join(string id)
+        {
+            try
+            {
+                var user = _userService.GetCurrentUser();
+                return View(user);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         public void ClearData()
         {
             var Users = _context.Users.ToList();
