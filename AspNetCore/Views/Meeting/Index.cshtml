@@ -1,4 +1,6 @@
 ﻿
+Meetings are still in development, sorry
+
 <table id="MeetingsTbl"></table>
 <span id="WarningMessage"></span>
 
@@ -7,37 +9,37 @@
 
     <script>
 
-        window.onload = function () {
+        //window.onload = function () {
 
-            $.ajax({
+        //    $.ajax({
 
-                url: "/Meeting/GetUserMeetings",
-                error: function (response) {
-                    $("#WarningMessage").text(response.responseText)
-                }
+        //        url: "/Meeting/GetUserMeetings",
+        //        error: function (response) {
+        //            $("#WarningMessage").text(response.responseText)
+        //        }
 
-            }).done(function (data) {
+        //    }).done(function (data) {
 
-                console.log(data.response);
+        //        console.log(data.response);
 
-                new DataTable('#MeetingsTbl', {
-                    data: data,
+        //        new DataTable('#MeetingsTbl', {
+        //            data: data,
 
-                    columns: [
-                        {
-                            title: 'Meeting',
-                            data: 'MeetingLink'
-                        },
-                        {
-                            title: "Invite Link",
-                            data: "InviteLink"
-                        }
-                    ]
-                });
+        //            columns: [
+        //                {
+        //                    title: 'Meeting',
+        //                    data: 'MeetingLink'
+        //                },
+        //                {
+        //                    title: "Invite Link",
+        //                    data: "InviteLink"
+        //                }
+        //            ]
+        //        });
 
-            });
+        //    });
 
-        }
+        //}
 
     </script>
 
