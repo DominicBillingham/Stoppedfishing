@@ -32,6 +32,7 @@ namespace StoppedFishing.Controllers
             {
 
                 var meeting = new Meeting();
+                meeting.Id = GenerateToken();
                 meeting.Name = meetingName;
                 _context.Meetings.Add(meeting);
 
@@ -52,7 +53,7 @@ namespace StoppedFishing.Controllers
 
         }
 
-        public IActionResult JoinMeeting(int id)
+        public IActionResult JoinMeeting(string id)
         {
             try
             {
@@ -122,7 +123,7 @@ namespace StoppedFishing.Controllers
           
         }
 
-        public IActionResult MeetingDetails(int id)
+        public IActionResult MeetingDetails(string id)
         {
             try
             {
@@ -143,7 +144,7 @@ namespace StoppedFishing.Controllers
             }
         }
 
-        public IActionResult FindMeetingTime(int id)
+        public IActionResult FindMeetingTime(string id)
         {
             try
             {
@@ -193,5 +194,19 @@ namespace StoppedFishing.Controllers
             }
 
         }
+
+        private String GenerateToken()
+        {
+            var allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var resultToken = new string(
+               Enumerable.Repeat(allChar, 4)
+               .Select(token => token[random.Next(token.Length)]).ToArray());
+
+            string authToken = resultToken.ToString();
+
+            return authToken;
+        }
     }
+
 }
