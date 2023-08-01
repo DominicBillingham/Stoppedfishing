@@ -3,6 +3,7 @@ using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using StoppedFishing.Data.Models;
 using StoppedFishing.Services;
 using System.Net;
 
@@ -126,6 +127,43 @@ namespace AspNetCore.Controllers
 
                 return Redirect("~/Meeting/Index");
                 //return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        public IActionResult ComposeTimeBlocks(List<HourBlock> blocks)
+        {
+            try
+            {   
+
+                var days = blocks
+                    .GroupBy(e => e.Day)
+                    .ToList();
+
+                foreach (var day in days)
+                {
+
+                    foreach(var block in day)
+                    {
+
+                        var fish = 0;
+
+
+
+
+                    }
+
+
+
+                }
+
+                return Ok();
 
             }
             catch (Exception ex)

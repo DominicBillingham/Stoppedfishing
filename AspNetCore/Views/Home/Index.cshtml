@@ -5,7 +5,7 @@
     <input id="StartHourText" class="col-3 rounded" type="text" placeholder="John Smith" />
     <input id="EndHourText" class="col-3 rounded" type="text" placeholder="John Smith" />
     <button id="CreateTimezoneBtn" class="col-3 rounded ml-4">pain</button>
-
+    <button id="PainBtn2" class="col-3 rounded ml-4">PAIN 2</button>
 </div>
 
 <style>
@@ -160,7 +160,11 @@
                 Days.forEach(function (day) {
 
                     var td = document.createElement("td");
-                    var text = document.createTextNode(String(i));
+                    var text = document.createTextNode(String(i) + "-" + String( parseInt(i) + 1 ));
+
+                    td.setAttribute("day", day.Number);
+                    td.setAttribute("hour", i);
+
                     td.appendChild(text);
                     row.appendChild(td);
 
@@ -191,13 +195,52 @@
 
             function changeCellColor(cell) {
 
-                var selectedColor = "#FF0000";
-                $(cell).css("background-color", selectedColor);
+                var td = $(cell);
+
+                if (td.hasClass("selected-block")) {
+                    td[0].classList.remove("selected-block");
+                } else {
+                    td[0].classList.add("selected-block");
+                }
 
             }
 
 
         });
+
+        $("#PainBtn2").on("click", function () {
+            PainBlocks()
+        });
+
+        function PainBlocks() {
+
+            var table = document.querySelector("#PainTable");
+            var selected = table.getElementsByClassName("selected-block");
+            var blocks = [];
+
+            for (item of selected) {
+
+                var timeblock = { "Day": item.getAttribute("day"), "Hour": item.getAttribute("hour") }
+                blocks.push(timeblock);
+            }
+
+            var data = {
+                "userId": _userId,
+                "blocks": blocks
+            };
+
+            console.log(data);
+
+            $.ajax({
+                type: "POST",
+                url: "/User/ComposeTimeBlocks",
+                dataType: "json",
+                data: data,
+
+            }).done(function () {
+                //alert("success");
+            })
+        }
 
     </script>
 
