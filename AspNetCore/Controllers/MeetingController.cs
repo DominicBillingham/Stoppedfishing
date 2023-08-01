@@ -125,7 +125,7 @@ namespace StoppedFishing.Controllers
 
                 var filtered = hourBlocks.Select(x => new
                 {
-                    Day = x.Day.ToString(),
+                    x.Day,
                     x.Hour
                 }).ToList();
 

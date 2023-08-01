@@ -22,8 +22,60 @@
     <span>@user.UserName, </span>
 }
 
-<h2 class="mb-0">Possible Meeting Times</h2>
-<span id="MeetingTimeText"></span>
+<h2 class="mb-0">Overlapping Free Time</h2>
+
+<div id="TablePanel" class="row">
+
+    <table id="TimeTable" class="mb-4">
+
+        <thead>
+            <tr>
+                <th>
+                    Monday
+                </th>
+                <th>
+                    Tuesday
+                </th>
+                <th>
+                    Wednesday
+                </th>
+                <th>
+                    Thursday
+                </th>
+                <th>
+                    Friday
+                </th>
+                <th>
+                    Saturday
+                </th>
+                <th>
+                    Sunday
+                </th>
+            </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+<style>
+
+    td {
+        border: 1px solid grey;
+        font-size: 16px;
+        padding: 1px;
+    }
+
+    table {
+        border-collapse: collapse;
+        text-align: center;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+        table-layout: fixed;
+    }
+</style>
+
 
 @section Scripts {
 
@@ -31,19 +83,53 @@
 
         var meetingId = '@Html.Raw(Model.Id)';
 
+        StartHour = 7;
+        EndHour = 21;
+
+        for (let i = StartHour; i <= EndHour; i++) {
+
+            var row = document.createElement("tr");
+
+            Days.forEach(function (day) {
+
+                var td = document.createElement("td");
+                var text = document.createTextNode(numberToTime(i) + " - " + numberToTime(i+1));
+
+                td.setAttribute("day", day.Number);
+                td.setAttribute("hour", i);
+
+                td.appendChild(text);
+                row.appendChild(td);
+
+            });
+
+            var table = document.querySelector("#TimeTable");
+            table.appendChild(row);
+
+        }
+
+        function numberToTime(number) {
+
+            let numStr = String(number);
+            while (numStr.length < 2) {
+                numStr = "0" + numStr;
+            }
+            return numStr + "00";
+
+        }
+
         $.ajax({
             url: "/Meeting/FindOverlappingTimes/" + meetingId
 
         }).done(function (data) {
 
-            console.log(data);
-            var tempString = "";
+            data.forEach(function (block) {
 
-            data.forEach(function (item) {
-                tempString = tempString + item.Day + " - " + item.Hour + ", ";
+                var matchingCell = $('td[day="' + block.Day + '"][hour="' + block.Hour + '"]');
+                matchingCell.addClass('selected-block');
+
             })
 
-            $("#MeetingTimeText").text(tempString);
 
 
         });

@@ -91,8 +91,8 @@
         var StartHour = $("#StartHourText").val()
         var EndHour = $("#EndHourText").val()
 
-        StartHour = 0;
-        EndHour = 14;
+        StartHour = 7;
+        EndHour = 21;
 
         for (let i = StartHour; i <= EndHour; i++) {
 
@@ -101,7 +101,7 @@
             Days.forEach(function (day) {
 
                 var td = document.createElement("td");
-                var text = document.createTextNode(String(i) + "-" + String(parseInt(i) + 1));
+                var text = document.createTextNode(numberToTime(i) + " - " + numberToTime(i + 1));
 
                 td.setAttribute("day", day.Number);
                 td.setAttribute("hour", i);
@@ -113,6 +113,16 @@
 
             var table = document.querySelector("#TimeTable");
             table.appendChild(row);
+
+        }
+
+        function numberToTime(number) {
+
+            let numStr = String(number);
+            while (numStr.length < 2) {
+                numStr = "0" + numStr;
+            }
+            return numStr + "00";
 
         }
 
