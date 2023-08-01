@@ -135,8 +135,6 @@ namespace AspNetCore.Controllers
             }
         }
 
-
-
         public IActionResult ComposeTimeBlocks(List<HourBlock> blocks)
         {
             try
@@ -146,19 +144,102 @@ namespace AspNetCore.Controllers
                     .GroupBy(e => e.Day)
                     .ToList();
 
+                var blockList = new List<TimeBlock>();
+
                 foreach (var day in days)
                 {
 
-                    foreach(var block in day)
+                    var hourList = day.Select(x => x.Hour).ToList();
+                    var length = 0;
+
+                    if (hourList.Count == 1)
+                    {
+                        var timeBlock = new TimeBlock();
+                        timeBlock.FinalHour = hourList.First();
+                        timeBlock.StartHour = hourList.First();
+                        timeBlock.Day = day.First().Day;
+                        blockList.Add(timeBlock);
+                        length = 0;
+                    }
+
+                    for (int i = 0; i < hourList.Count-1; i++)
                     {
 
-                        var fish = 0;
+                        int current = hourList[i];
+                        int next = hourList[i + 1];
 
+                        if (current + 1 == next)
+                        {
+                            length++;
+                        }
+                        else
+                        {
+                            var timeBlock = new TimeBlock();
+                            timeBlock.FinalHour = current;
+                            timeBlock.StartHour = current - length;
+                            timeBlock.Day = day.First().Day;
+                            blockList.Add(timeBlock);
+                            length = 0;
+                        }
 
+                        if (i == hourList.Count - 2)
+                        {
+
+                            var timeBlock = new TimeBlock();
+                            timeBlock.FinalHour = next;
+                            timeBlock.StartHour = next - length;
+                            timeBlock.Day = day.First().Day;
+                            blockList.Add(timeBlock);
+                            length = 0;
+
+                        }
 
 
                     }
 
+                }
+
+                DecomposeTimeBlocks(blockList);
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        public IActionResult DecomposeTimeBlocks(List<TimeBlock> blocks)
+        {
+            try
+            {
+
+                var days = blocks
+                   .GroupBy(e => e.Day)
+                   .ToList();
+
+                var hourBlockList = new List<HourBlock>();
+
+                foreach (var day in days)
+                {
+                    foreach (var block in day)
+                    {
+
+                        var start = block.StartHour;
+                        var final = block.FinalHour;
+
+                        for (int i = start;  i <= final; i++) {
+
+                            var hourBlock = new HourBlock();
+                            hourBlock.Hour = i;
+                            hourBlock.Day = block.Day;
+                            hourBlockList.Add(hourBlock);
+                        }
+
+
+                    }
 
 
                 }
@@ -170,6 +251,49 @@ namespace AspNetCore.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        public IActionResult FindOverlap(string id)
+        {
+            try
+            {
+                var meeting = _context.Meetings
+                    .Include(meet => meet.Users)
+                    .Single(meet => meet.Id == id);
+
+                if (meeting == null)
+                {
+                    return BadRequest("Meeting not found");
+                }
+
+                List<SimpleTimeBlock> allMeetingBlocks = new List<SimpleTimeBlock>();
+
+                foreach (var user in meeting.Users)
+                {
+                    allMeetingBlocks.AddRange(user.SimpleBlocks);
+                }
+
+                var meetingTime = allMeetingBlocks.Select(x => new {
+                    Day = x.Day.ToString(),
+                    SimpleBlock = x.SimpleBlock.ToString(),
+                });
+
+                var userCount = meeting.Users.Count();
+
+                var matchingBlocks = meetingTime
+                    .GroupBy(e => e)
+                    .Where(e => e.Count() == userCount)
+                    .Select(e => e.First())
+                    .ToList();
+
+                return Json(data: matchingBlocks);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
     }

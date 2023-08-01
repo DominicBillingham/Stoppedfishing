@@ -8,7 +8,7 @@ namespace StoppedFishing.Data.Models
         [Key]
         public int Id { get; set; }
         public int StartHour { get; set; }
-        public int EndHour { get; set; }
+        public int FinalHour { get; set; }
         public Days Day { get; set; }
     }
 }
