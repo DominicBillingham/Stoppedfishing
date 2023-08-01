@@ -244,6 +244,8 @@ namespace AspNetCore.Controllers
 
                 }
 
+                FindOverlap(hourBlockList);
+
                 return Ok();
 
             }
@@ -253,40 +255,24 @@ namespace AspNetCore.Controllers
             }
         }
 
-        public IActionResult FindOverlap(string id)
+        public IActionResult FindOverlap(List<HourBlock> blocks)
         {
             try
             {
-                var meeting = _context.Meetings
-                    .Include(meet => meet.Users)
-                    .Single(meet => meet.Id == id);
 
-                if (meeting == null)
-                {
-                    return BadRequest("Meeting not found");
-                }
-
-                List<SimpleTimeBlock> allMeetingBlocks = new List<SimpleTimeBlock>();
-
-                foreach (var user in meeting.Users)
-                {
-                    allMeetingBlocks.AddRange(user.SimpleBlocks);
-                }
-
-                var meetingTime = allMeetingBlocks.Select(x => new {
+                var meetingTime = blocks.Select(x => new {
                     Day = x.Day.ToString(),
-                    SimpleBlock = x.SimpleBlock.ToString(),
+                    Hour = x.Hour
                 });
-
-                var userCount = meeting.Users.Count();
 
                 var matchingBlocks = meetingTime
                     .GroupBy(e => e)
-                    .Where(e => e.Count() == userCount)
+                    .Where(e => e.Count() == 2)
                     .Select(e => e.First())
                     .ToList();
 
-                return Json(data: matchingBlocks);
+                return Ok();
+                //return Json(data: matchingBlocks);
 
             }
             catch (Exception ex)
