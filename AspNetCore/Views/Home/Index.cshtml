@@ -1,4 +1,66 @@
 ﻿
+<div class="row mb-4">
+
+
+    <input id="StartHourText" class="col-3 rounded" type="text" placeholder="John Smith" />
+    <input id="EndHourText" class="col-3 rounded" type="text" placeholder="John Smith" />
+    <button id="CreateTimezoneBtn" class="col-3 rounded ml-4">pain</button>
+
+</div>
+
+<style>
+
+    td {
+        border: 1px solid black;
+        font-size: 16px;
+        padding: 1px;
+    }
+
+    table {
+        border-collapse: collapse;
+        text-align: center;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+
+    }
+</style>
+
+<div class="row">
+
+    <table id="PainTable">
+
+        <thead>
+            <tr>
+                <th>
+                    Monday
+                </th>
+                <th>
+                    Tuesday
+                </th>
+                <th>
+                    Wednesday
+                </th>
+                <th>
+                    Thursday
+                </th>
+                <th>
+                    Friday
+                </th>
+                <th>
+                    Saturday
+                </th>
+                <th>
+                    Sunday
+                </th>
+            </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+
 <div class="row">
 
     <div class="col-6 mb-4">
@@ -72,6 +134,72 @@
 </div>
 
 @section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+    </script>
+
+    <script>
+
+
+        var isMouseDown = false;
+
+        $("#CreateTimezoneBtn").on("click", function () {
+
+            var StartHour = $("#StartHourText").val()
+            var EndHour = $("#EndHourText").val()
+
+            for (let i = StartHour; i <= EndHour; i++) {
+
+                var row = document.createElement("tr");
+
+                Days.forEach(function (day) {
+
+                    var td = document.createElement("td");
+                    var text = document.createTextNode(String(i));
+                    td.appendChild(text);
+                    row.appendChild(td);
+
+                });
+
+                var table = document.querySelector("#PainTable");
+                table.appendChild(row);
+
+            }
+
+            // Event handler for mouse down on a cell
+            $("td").mousedown(function () {
+                isMouseDown = true;
+                changeCellColor(this);
+            });
+
+            // Event handler for mouse over a cell while dragging
+            $("td").mouseover(function () {
+                if (isMouseDown) {
+                    changeCellColor(this);
+                }
+            });
+
+            // Event handler for mouse up anywhere on the page
+            $(document).mouseup(function () {
+                isMouseDown = false;
+            });
+
+            function changeCellColor(cell) {
+
+                var selectedColor = "#FF0000";
+                $(cell).css("background-color", selectedColor);
+
+            }
+
+
+        });
+
+    </script>
 
     <script>
 

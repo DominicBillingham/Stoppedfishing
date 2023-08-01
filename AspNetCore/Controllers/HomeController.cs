@@ -23,6 +23,10 @@ namespace AspNetCore.Controllers
         {
             try
             {
+
+
+                TimeZoneInfo localZone = TimeZoneInfo.Local;
+
                 var user = _userService.GetCurrentUser();
                 return View(user);
 
