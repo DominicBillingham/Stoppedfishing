@@ -1,8 +1,9 @@
-﻿@model AspNetCore.Data.Models.Meeting
+﻿@using Azure.Core;
+@model AspNetCore.Data.Models.Meeting
 
 @{
-    var meetingLink = "https://localhost:44349/Meeting/MeetingDetails/" + Model.Id;
-    var inviteLink = "https://localhost:44349/Home/Join/" + Model.Id;
+    var meetingLink = Url.ActionLink("MeetingDetails", "Meeting", new { id = Model.Id });
+    var inviteLink = Url.ActionLink("Join", "Home", new { id = Model.Id });
 }
 
 

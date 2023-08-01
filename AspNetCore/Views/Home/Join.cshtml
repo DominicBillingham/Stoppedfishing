@@ -1,10 +1,5 @@
 ﻿@model AspNetCore.Data.Models.Meeting
 
-@{
-    var meetingLink = "https://localhost:44349/Meeting/MeetingDetails/" + Model.Id;
-}
-
-
 <div class="row mb-4">
 
     <div class="col-6">
@@ -17,7 +12,7 @@
 
 </div>
 
-<div id="TablePanel" class="row">
+<div id="TablePanel" class="row panel">
 
     <h2 class="fw-bold">2. Choose when you're down to hang</h2>
 
@@ -51,10 +46,10 @@
 
     </table>
 
-    <button id="JoinMeetingBtn" class="rounded ml-4 col-2">Update availability</button>
+    <button id="UpdateBlocksBtn" class="rounded ml-4 col-2">Update availability</button>
 
     <form class="d-inline-block col-4" asp-controller="Meeting" asp-action="JoinMeeting" asp-route-id="@Model.Id">
-        <button class="rounded ml-4">Finish</button>
+        <button id="FinishBtn" class="rounded ml-4" disabled >Finish</button>
     </form>
 
 </div>
@@ -156,8 +151,9 @@
 
         }
 
-        $("#JoinMeetingBtn").on("click", function () {
-            UpdateUserBlocks()
+        $("#UpdateBlocksBtn").on("click", function () {
+            UpdateUserBlocks();
+            $("#FinishBtn").prop("disabled", false);
         });
 
         function UpdateUserBlocks() {
