@@ -3,6 +3,7 @@ using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using StoppedFishing.Data.Models;
 using StoppedFishing.Services;
 using System.Net;
@@ -47,55 +48,33 @@ namespace AspNetCore.Controllers
 
         }
 
-        public IActionResult LogIn(string userName)
+        public IActionResult UpdateUserTimeBlocks(List<HourBlock> blocks)
         {
-
-            try
-            {
-                var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
-
-                if (user == null)
-                {
-                    return BadRequest("User not found!");
-                }
-
-                _userService.SetCurrentUserId(user.Id);
-
-                return Redirect("~/Home/Index");
-
-            } catch (Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
-        public IActionResult SignOut()
-        {
-
-            try
-            {
-                _userService.SignOutCurrentUser();
-                return Redirect("~/Home/Index");
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
-
-        public IActionResult GetCurrentUserName() {
 
             try
             {
                 var user = _userService.GetCurrentUser();
+                var timeBlocks = ComposeTimeBlocks(blocks);
+
+
                 if (user == null)
                 {
-                    return BadRequest("User not found");
+                    return BadRequest();
                 }
-                return Ok(user.UserName);
 
+                //user.SimpleBlocks = new List<SimpleTimeBlock>();
+
+                //foreach (var block in blocks)
+                //{
+                //    user.SimpleBlocks.Add(block);
+                //}
+
+                //_context.SaveChanges();
+
+                return Redirect("~/Meeting/Index");
+
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -105,7 +84,65 @@ namespace AspNetCore.Controllers
         }
 
 
-        public IActionResult UpdateUserTimeBlocks(int userId, List<SimpleTimeBlock> blocks)
+        //public IActionResult LogIn(string userName)
+        //{
+
+        //    try
+        //    {
+        //        var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
+
+        //        if (user == null)
+        //        {
+        //            return BadRequest("User not found!");
+        //        }
+
+        //        _userService.SetCurrentUserId(user.Id);
+
+        //        return Redirect("~/Home/Index");
+
+        //    } catch (Exception ex) 
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+        //public IActionResult SignOut()
+        //{
+
+        //    try
+        //    {
+        //        _userService.SignOutCurrentUser();
+        //        return Redirect("~/Home/Index");
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
+        //public IActionResult GetCurrentUserName() {
+
+        //    try
+        //    {
+        //        var user = _userService.GetCurrentUser();
+        //        if (user == null)
+        //        {
+        //            return BadRequest("User not found");
+        //        }
+        //        return Ok(user.UserName);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
+
+        public IActionResult xxxUpdateUserTimeBlocks(int userId, List<SimpleTimeBlock> blocks)
         {
             try
             {
@@ -135,79 +172,70 @@ namespace AspNetCore.Controllers
             }
         }
 
-        public IActionResult ComposeTimeBlocks(List<HourBlock> blocks)
+        private List<TimeBlock> ComposeTimeBlocks(List<HourBlock> blocks)
         {
-            try
-            {   
 
-                var days = blocks
-                    .GroupBy(e => e.Day)
-                    .ToList();
+            var days = blocks
+                .GroupBy(e => e.Day)
+                .ToList();
 
-                var blockList = new List<TimeBlock>();
+            var blockList = new List<TimeBlock>();
 
-                foreach (var day in days)
+            foreach (var day in days)
+            {
+
+                var hourList = day.Select(x => x.Hour).ToList();
+                var length = 0;
+
+                if (hourList.Count == 1)
+                {
+                    var timeBlock = new TimeBlock();
+                    timeBlock.FinalHour = hourList.First();
+                    timeBlock.StartHour = hourList.First();
+                    timeBlock.Day = day.First().Day;
+                    blockList.Add(timeBlock);
+                    length = 0;
+                }
+
+                for (int i = 0; i < hourList.Count-1; i++)
                 {
 
-                    var hourList = day.Select(x => x.Hour).ToList();
-                    var length = 0;
+                    int current = hourList[i];
+                    int next = hourList[i + 1];
 
-                    if (hourList.Count == 1)
+                    if (current + 1 == next)
+                    {
+                        length++;
+                    }
+                    else
                     {
                         var timeBlock = new TimeBlock();
-                        timeBlock.FinalHour = hourList.First();
-                        timeBlock.StartHour = hourList.First();
+                        timeBlock.FinalHour = current;
+                        timeBlock.StartHour = current - length;
                         timeBlock.Day = day.First().Day;
                         blockList.Add(timeBlock);
                         length = 0;
                     }
 
-                    for (int i = 0; i < hourList.Count-1; i++)
+                    if (i == hourList.Count - 2)
                     {
 
-                        int current = hourList[i];
-                        int next = hourList[i + 1];
-
-                        if (current + 1 == next)
-                        {
-                            length++;
-                        }
-                        else
-                        {
-                            var timeBlock = new TimeBlock();
-                            timeBlock.FinalHour = current;
-                            timeBlock.StartHour = current - length;
-                            timeBlock.Day = day.First().Day;
-                            blockList.Add(timeBlock);
-                            length = 0;
-                        }
-
-                        if (i == hourList.Count - 2)
-                        {
-
-                            var timeBlock = new TimeBlock();
-                            timeBlock.FinalHour = next;
-                            timeBlock.StartHour = next - length;
-                            timeBlock.Day = day.First().Day;
-                            blockList.Add(timeBlock);
-                            length = 0;
-
-                        }
-
+                        var timeBlock = new TimeBlock();
+                        timeBlock.FinalHour = next;
+                        timeBlock.StartHour = next - length;
+                        timeBlock.Day = day.First().Day;
+                        blockList.Add(timeBlock);
+                        length = 0;
 
                     }
 
+
                 }
 
-                DecomposeTimeBlocks(blockList);
-
-                return Ok();
-
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            return blockList;
+
         }
 
 

@@ -36,12 +36,13 @@ namespace StoppedFishing.Controllers
                 meeting.Name = meetingName;
                 _context.Meetings.Add(meeting);
 
-                var userId = _userService.GetCurrentUserId();
-                var user = _context.Users
-                    .Include(user => user.Meetings)
-                    .Single(user => user.Id == userId);
+                //var userId = _userService.GetCurrentUserId();
+                //var user = _context.Users
+                //    .Include(user => user.Meetings)
+                //    .Single(user => user.Id == userId);
 
-                user.Meetings.Add(meeting);
+                //user.Meetings.Add(meeting);
+
                 _context.SaveChanges();
 
                 //return Ok("Meeting created");

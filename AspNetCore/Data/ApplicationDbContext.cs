@@ -1,5 +1,6 @@
 ﻿using AspNetCore.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using StoppedFishing.Data.Models;
 
 namespace AspNetCore.Data
 {
@@ -21,11 +22,13 @@ namespace AspNetCore.Data
         {
             modelBuilder.Entity<Meeting>().HasMany(meet => meet.Users).WithMany(user => user.Meetings);
             modelBuilder.Entity<User>().OwnsMany(user => user.SimpleBlocks);
+            modelBuilder.Entity<User>().OwnsMany(user => user.TimeBlock);
         }
 
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<SimpleTimeBlock> SimpleTimeBlocks { get; set; }
+        public DbSet<TimeBlock> TimeBlocks { get; set; }
     }
 }
 
