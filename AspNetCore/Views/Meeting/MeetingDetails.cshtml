@@ -32,7 +32,7 @@
         var meetingId = '@Html.Raw(Model.Id)';
 
         $.ajax({
-            url: "/Meeting/FindMeetingTime/" + meetingId
+            url: "/Meeting/FindOverlappingTimes/" + meetingId
 
         }).done(function (data) {
 
@@ -40,7 +40,7 @@
             var tempString = "";
 
             data.forEach(function (item) {
-                tempString = tempString + item.Day + " - " + item.SimpleBlock + ", ";
+                tempString = tempString + item.Day + " - " + item.Hour + ", ";
             })
 
             $("#MeetingTimeText").text(tempString);

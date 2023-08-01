@@ -1,5 +1,10 @@
 ﻿@model AspNetCore.Data.Models.Meeting
 
+@{
+    var meetingLink = "https://localhost:44349/Meeting/MeetingDetails/" + Model.Id;
+}
+
+
 <div class="row mb-4">
 
     <div class="col-6">
@@ -12,7 +17,7 @@
 
 </div>
 
-<div id="TablePanel" class="row panel">
+<div id="TablePanel" class="row">
 
     <h2 class="fw-bold">2. Choose when you're down to hang</h2>
 
@@ -46,7 +51,11 @@
 
     </table>
 
-    <button id="JoinMeetingBtn" class="rounded ml-4 col-2 m-auto">Join Meeting</button>
+    <button id="JoinMeetingBtn" class="rounded ml-4 col-2">Update availability</button>
+
+    <form class="d-inline-block col-4" asp-controller="Meeting" asp-action="JoinMeeting" asp-route-id="@Model.Id">
+        <button class="rounded ml-4">Finish</button>
+    </form>
 
 </div>
 

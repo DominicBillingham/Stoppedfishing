@@ -5,6 +5,7 @@ using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using StoppedFishing.Data.Models;
 using StoppedFishing.Services;
 using static System.Net.WebRequestMethods;
 
@@ -35,17 +36,8 @@ namespace StoppedFishing.Controllers
                 meeting.Id = GenerateToken();
                 meeting.Name = meetingName;
                 _context.Meetings.Add(meeting);
-
-                //var userId = _userService.GetCurrentUserId();
-                //var user = _context.Users
-                //    .Include(user => user.Meetings)
-                //    .Single(user => user.Id == userId);
-
-                //user.Meetings.Add(meeting);
-
                 _context.SaveChanges();
 
-                //return Ok("Meeting created");
                 return RedirectToAction("MeetingDetails", new { id = meeting.Id });
 
             } catch (Exception ex)
@@ -85,46 +77,6 @@ namespace StoppedFishing.Controllers
 
         }
 
-        public IActionResult GetUserMeetings()
-        {
-
-            try
-            {
-                var user = _userService.GetCurrentUser();
-
-                if (user == null)
-                {
-                    return BadRequest("Sign in to be able to see your current meetings");
-                }
-
-                var meetings = _context.Meetings
-                    .Where(meet => meet.Users.Contains(user))
-                    .Select(x => new
-                    {
-                        x.Name,
-                        x.Id
-                    }).ToList();
-
-                if (meetings.Count == 0)
-                {
-                    return NotFound("You haven't got any meetings... yet!");
-                }
-
-                var meetingsUpdate = meetings.Select(x => new
-                {
-                    MeetingLink = $"<a href='/Meeting/MeetingDetails/{x.Id}'>{x.Name}</a>",
-                    InviteLink = "https://localhost:44349/Meeting/JoinMeeting/" + x.Id
-                });
-
-                return Json(data: meetingsUpdate);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-          
-        }
-
         public IActionResult MeetingDetails(string id)
         {
             try
@@ -146,46 +98,86 @@ namespace StoppedFishing.Controllers
             }
         }
 
-        public IActionResult FindMeetingTime(string id)
+        public IActionResult FindOverlappingTimes(string id)
         {
             try
             {
+
                 var meeting = _context.Meetings
                     .Include(meet => meet.Users)
                     .Single(meet => meet.Id == id);
+
+                var userCount = meeting.Users.Count();
 
                 if (meeting == null)
                 {
                     return BadRequest("Meeting not found");
                 }
 
-                List<SimpleTimeBlock> allMeetingBlocks = new List<SimpleTimeBlock>();
+                List<TimeBlock> timeBlocks = new List<TimeBlock>();
 
-                foreach(var user in meeting.Users)
+                foreach (var user in meeting.Users)
                 {
-                    allMeetingBlocks.AddRange(user.SimpleBlocks);
+                    timeBlocks.AddRange(user.TimeBlocks);
                 }
 
-                var meetingTime = allMeetingBlocks.Select(x => new { 
-                    Day = x.Day.ToString(),  
-                    SimpleBlock = x.SimpleBlock.ToString(),
-                });
+                List<HourBlock> hourBlocks = DecomposeTimeBlocks(timeBlocks);
 
-                var userCount = meeting.Users.Count();
+                var filtered = hourBlocks.Select(x => new
+                {
+                    Day = x.Day.ToString(),
+                    x.Hour
+                }).ToList();
 
-                var matchingBlocks = meetingTime
+
+                var overlappingBlocks = filtered
                     .GroupBy(e => e)
                     .Where(e => e.Count() == userCount)
                     .Select(e => e.First())
                     .ToList();
 
-                return Json(data: matchingBlocks);
+                return Json(data: overlappingBlocks);
 
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
+        }
+
+        private List<HourBlock> DecomposeTimeBlocks(List<TimeBlock> blocks)
+        {
+
+            var days = blocks
+                .GroupBy(e => e.Day)
+                .ToList();
+
+            var hourBlockList = new List<HourBlock>();
+
+            foreach (var day in days)
+            {
+                foreach (var block in day)
+                {
+
+                    var start = block.StartHour;
+                    var final = block.FinalHour;
+
+                    for (int i = start; i <= final; i++)
+                    {
+
+                        var hourBlock = new HourBlock();
+                        hourBlock.Hour = i;
+                        hourBlock.Day = block.Day;
+                        hourBlockList.Add(hourBlock);
+                    }
+
+
+                }
+
+            }
+
+            return hourBlockList;
 
         }
 
@@ -201,6 +193,46 @@ namespace StoppedFishing.Controllers
 
             return authToken;
         }
+
+        //public IActionResult GetUserMeetings()
+        //{
+
+        //    try
+        //    {
+        //        var user = _userService.GetCurrentUser();
+
+        //        if (user == null)
+        //        {
+        //            return BadRequest("Sign in to be able to see your current meetings");
+        //        }
+
+        //        var meetings = _context.Meetings
+        //            .Where(meet => meet.Users.Contains(user))
+        //            .Select(x => new
+        //            {
+        //                x.Name,
+        //                x.Id
+        //            }).ToList();
+
+        //        if (meetings.Count == 0)
+        //        {
+        //            return NotFound("You haven't got any meetings... yet!");
+        //        }
+
+        //        var meetingsUpdate = meetings.Select(x => new
+        //        {
+        //            MeetingLink = $"<a href='/Meeting/MeetingDetails/{x.Id}'>{x.Name}</a>",
+        //            InviteLink = "https://localhost:44349/Meeting/JoinMeeting/" + x.Id
+        //        });
+
+        //        return Json(data: meetingsUpdate);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
     }
 
 }
