@@ -22,7 +22,7 @@ namespace AspNetCore.Data
         {
             modelBuilder.Entity<Meeting>().HasMany(meet => meet.Users).WithMany(user => user.Meetings);
             modelBuilder.Entity<User>().OwnsMany(user => user.SimpleBlocks);
-            modelBuilder.Entity<User>().OwnsMany(user => user.TimeBlock);
+            modelBuilder.Entity<User>().OwnsMany(user => user.TimeBlocks);
         }
 
         public DbSet<Meeting> Meetings { get; set; }

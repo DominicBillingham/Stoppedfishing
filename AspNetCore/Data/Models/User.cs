@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using StoppedFishing.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace AspNetCore.Data.Models
@@ -13,7 +14,7 @@ namespace AspNetCore.Data.Models
         public string DisplayName { get; set; }
 
         public ICollection<SimpleTimeBlock> SimpleBlocks { get; set; }
-        public ICollection<SimpleTimeBlock> TimeBlock { get; set; }
+        public ICollection<TimeBlock> TimeBlocks { get; set; }
         public ICollection<Meeting> Meetings { get; set; }
 
     }

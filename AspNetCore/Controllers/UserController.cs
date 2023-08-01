@@ -56,23 +56,19 @@ namespace AspNetCore.Controllers
                 var user = _userService.GetCurrentUser();
                 var timeBlocks = ComposeTimeBlocks(blocks);
 
-
                 if (user == null)
                 {
                     return BadRequest();
                 }
 
-                //user.SimpleBlocks = new List<SimpleTimeBlock>();
+                user.TimeBlocks = new List<TimeBlock>();
 
-                //foreach (var block in blocks)
-                //{
-                //    user.SimpleBlocks.Add(block);
-                //}
+                foreach (var block in timeBlocks)
+                {
+                    user.TimeBlocks.Add(block);
+                }
 
-                //_context.SaveChanges();
-
-                return Redirect("~/Meeting/Index");
-
+                _context.SaveChanges();
 
                 return Ok();
             }
@@ -82,96 +78,6 @@ namespace AspNetCore.Controllers
             }
 
         }
-
-
-        //public IActionResult LogIn(string userName)
-        //{
-
-        //    try
-        //    {
-        //        var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
-
-        //        if (user == null)
-        //        {
-        //            return BadRequest("User not found!");
-        //        }
-
-        //        _userService.SetCurrentUserId(user.Id);
-
-        //        return Redirect("~/Home/Index");
-
-        //    } catch (Exception ex) 
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-        //public IActionResult SignOut()
-        //{
-
-        //    try
-        //    {
-        //        _userService.SignOutCurrentUser();
-        //        return Redirect("~/Home/Index");
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-
-        //public IActionResult GetCurrentUserName() {
-
-        //    try
-        //    {
-        //        var user = _userService.GetCurrentUser();
-        //        if (user == null)
-        //        {
-        //            return BadRequest("User not found");
-        //        }
-        //        return Ok(user.UserName);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-
-
-        public IActionResult xxxUpdateUserTimeBlocks(int userId, List<SimpleTimeBlock> blocks)
-        {
-            try
-            {
-                var user = _context.Users.Find(userId);
-
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-
-                user.SimpleBlocks = new List<SimpleTimeBlock>();
-
-                foreach (var block in blocks)
-                {
-                    user.SimpleBlocks.Add(block);
-                }
-
-                _context.SaveChanges();
-
-                return Redirect("~/Meeting/Index");
-                //return Ok();
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         private List<TimeBlock> ComposeTimeBlocks(List<HourBlock> blocks)
         {
 
@@ -239,48 +145,39 @@ namespace AspNetCore.Controllers
         }
 
 
-        public IActionResult DecomposeTimeBlocks(List<TimeBlock> blocks)
+        public List<HourBlock> DecomposeTimeBlocks(List<TimeBlock> blocks)
         {
-            try
+         
+            var days = blocks
+                .GroupBy(e => e.Day)
+                .ToList();
+
+            var hourBlockList = new List<HourBlock>();
+
+            foreach (var day in days)
             {
-
-                var days = blocks
-                   .GroupBy(e => e.Day)
-                   .ToList();
-
-                var hourBlockList = new List<HourBlock>();
-
-                foreach (var day in days)
+                foreach (var block in day)
                 {
-                    foreach (var block in day)
-                    {
 
-                        var start = block.StartHour;
-                        var final = block.FinalHour;
+                    var start = block.StartHour;
+                    var final = block.FinalHour;
 
-                        for (int i = start;  i <= final; i++) {
+                    for (int i = start;  i <= final; i++) {
 
-                            var hourBlock = new HourBlock();
-                            hourBlock.Hour = i;
-                            hourBlock.Day = block.Day;
-                            hourBlockList.Add(hourBlock);
-                        }
-
-
+                        var hourBlock = new HourBlock();
+                        hourBlock.Hour = i;
+                        hourBlock.Day = block.Day;
+                        hourBlockList.Add(hourBlock);
                     }
 
 
                 }
 
-                FindOverlap(hourBlockList);
-
-                return Ok();
 
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            return hourBlockList;
+
         }
 
         public IActionResult FindOverlap(List<HourBlock> blocks)
@@ -310,5 +207,65 @@ namespace AspNetCore.Controllers
 
         }
 
+
+        //public IActionResult LogIn(string userName)
+        //{
+
+        //    try
+        //    {
+        //        var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
+
+        //        if (user == null)
+        //        {
+        //            return BadRequest("User not found!");
+        //        }
+
+        //        _userService.SetCurrentUserId(user.Id);
+
+        //        return Redirect("~/Home/Index");
+
+        //    } catch (Exception ex) 
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+        //public IActionResult SignOut()
+        //{
+
+        //    try
+        //    {
+        //        _userService.SignOutCurrentUser();
+        //        return Redirect("~/Home/Index");
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
+        //public IActionResult GetCurrentUserName() {
+
+        //    try
+        //    {
+        //        var user = _userService.GetCurrentUser();
+        //        if (user == null)
+        //        {
+        //            return BadRequest("User not found");
+        //        }
+        //        return Ok(user.UserName);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
+
     }
+
 }
