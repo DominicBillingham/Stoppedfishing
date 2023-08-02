@@ -12,8 +12,6 @@ namespace AspNetCore.Data.Models
         public string UserName { get; set; }
         [Required]
         public string DisplayName { get; set; }
-
-        public ICollection<SimpleTimeBlock> SimpleBlocks { get; set; }
         public ICollection<TimeBlock> TimeBlocks { get; set; }
         public ICollection<Meeting> Meetings { get; set; }
 
