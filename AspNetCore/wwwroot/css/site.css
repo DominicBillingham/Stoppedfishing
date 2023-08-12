@@ -24,6 +24,10 @@ body {
     background-color: rgb(255, 240, 240);
 }
 
+.logo {
+    color: palevioletred;
+}
+
 main {
     justify-content: center;
 
@@ -95,4 +99,17 @@ table {
 
 .select-table {
     cursor: cell;
+}
+
+a:visited {
+    color: firebrick;
+}
+
+a:hover {
+    color: firebrick;
+    text-decoration: underline;
+}
+
+a:active {
+    color: firebrick;
 }

@@ -7,10 +7,6 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-a {
-
-}
-
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
 
 }
@@ -32,9 +28,9 @@ button.accept-policy {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
 }
