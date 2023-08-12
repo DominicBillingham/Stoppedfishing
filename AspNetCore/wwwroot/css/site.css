@@ -37,14 +37,10 @@ thead {
     color: #6c757d;
 }
 
-
 .smalltext {
     color: #6c757d;
     font-size: 20px;
 }
-
-
-
 
 .selected-block {
     background-color: rgb(255, 142, 142);
@@ -52,6 +48,9 @@ thead {
 
 td {
     padding: 5px;
+    border: 1px solid black;
+    font-size: 16px;
+    padding: 1px;
 }
 
 button {
@@ -85,3 +84,15 @@ input {
     border-radius: 8px;
 }
 
+table {
+    border-collapse: collapse;
+    text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    table-layout: fixed;
+}
+
+.select-table {
+    cursor: cell;
+}
