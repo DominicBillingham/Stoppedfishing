@@ -27,6 +27,7 @@ namespace AspNetCore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Meeting>().HasMany(meet => meet.Users).WithMany(user => user.Meetings);
+            modelBuilder.Entity<Meeting>().HasOne(meet => meet.Owner).WithMany(user => user.Meetings);
             modelBuilder.Entity<User>().OwnsMany(user => user.TimeBlocks);
         }
 

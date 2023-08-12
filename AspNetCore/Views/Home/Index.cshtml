@@ -1,15 +1,45 @@
-﻿<div class="row">
+﻿
 
-    <div class="col-6">
+<form method="post" asp-controller="Meeting" asp-action="CreateMeeting">
 
-        <form method="post" asp-controller="Meeting" asp-action="CreateMeeting">
+    <div class="row mb-4">
+
+        <div class="col-6">
 
             <h2 class="fw-bold">1. Choose a magical meeting name</h2>
             <input class="col-8" type="text" name="meetingName" placeholder="Movie Hangout" />
-            <button class="rounded ml-4 col-3" type="submit">Create Meeting</button>
+            <button id="MeetingNameBtn" class="rounded ml-4 col-3" type="button">Continue</button>
 
-         </form>
+        </div>
 
     </div>
 
-</div>
+    <div id="HourPanel" class="row mb-4 panel">
+
+        <div class="col-6">
+
+            <h2 class="fw-bold">2. Choose the hours you want meet between</h2>
+            from:
+            <input class="col-3" type="text" name="startHour" placeholder="07" />
+            &nbsp;&nbsp;&nbsp; to:
+            <input class="col-3" type="text" name="endHour" placeholder="18" />
+            <button class="rounded ml-4 col-3" type="submit">Create Meeting</button>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+
+    <script>
+
+        $("#MeetingNameBtn").on("click", function () {
+            $("#HourPanel").slideDown("slow");
+        });
+
+    </script>
+
+}

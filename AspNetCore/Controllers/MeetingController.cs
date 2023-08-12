@@ -27,7 +27,7 @@ namespace StoppedFishing.Controllers
             return View();
         }
 
-        public IActionResult CreateMeeting(string meetingName) {
+        public IActionResult CreateMeeting(string meetingName, int startHour, int endHour) {
 
             try
             {
@@ -38,7 +38,7 @@ namespace StoppedFishing.Controllers
                 _context.Meetings.Add(meeting);
                 _context.SaveChanges();
 
-                return RedirectToAction("MeetingDetails", new { id = meeting.Id });
+                return RedirectToAction("MeetingDetails", new { id = meeting.Id});
 
             } catch (Exception ex)
             {
@@ -194,45 +194,6 @@ namespace StoppedFishing.Controllers
             return authToken;
         }
 
-        //public IActionResult GetUserMeetings()
-        //{
-
-        //    try
-        //    {
-        //        var user = _userService.GetCurrentUser();
-
-        //        if (user == null)
-        //        {
-        //            return BadRequest("Sign in to be able to see your current meetings");
-        //        }
-
-        //        var meetings = _context.Meetings
-        //            .Where(meet => meet.Users.Contains(user))
-        //            .Select(x => new
-        //            {
-        //                x.Name,
-        //                x.Id
-        //            }).ToList();
-
-        //        if (meetings.Count == 0)
-        //        {
-        //            return NotFound("You haven't got any meetings... yet!");
-        //        }
-
-        //        var meetingsUpdate = meetings.Select(x => new
-        //        {
-        //            MeetingLink = $"<a href='/Meeting/MeetingDetails/{x.Id}'>{x.Name}</a>",
-        //            InviteLink = "https://localhost:44349/Meeting/JoinMeeting/" + x.Id
-        //        });
-
-        //        return Json(data: meetingsUpdate);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
     }
 
 }
