@@ -1,40 +1,25 @@
-﻿
+﻿- - - - Future Features:
 
-
-
-
-- - - - Use Cases
-
-User No Account, Create Meeting
-1. User opens website without a join link
-2. Creates an account, chooses their availability, creates a meeintg
-3. Taken to the meeting page, and gets an invite link
-
-User No Account, Join Meeting
-1. User opens website with a join link
-2. Creates an account, and chooses their availability
-3. Taken to the meeting details page
-
-
-- - - - Style Guide
-All functions start with a captial letter
-services and context to be stored in controllers with an _
-All JavaScript functions start with a captial letter
-Parameters to functions start with a lower case letter
-ID's will be capitilised an end with the element they are e.g SubmitUserBtn
-
-
-- - - - Future Features:
-
-Validation on fields
-Error handling on server side
-Installing noty to inform users of mistakes.
-
-Add a Meetings Overview page
-Add a Availailbility Page
-
-Allow google login
+User Side Validation (Maybe using JQUERY validation);
+Error page for when an error occurs, 
+Noty for sending messages to users;
+When user is joining meeting, show the availiability for the meeting already in the join menu
+Copy button for copying the link
+Make it work for mobile? Lettuce Meet? An arrow to split the table
 Allow for unix timestamps
+Custom routes
+Commence week
 
-Add custom routes for 
-Naming Convetions
+- - - - - Meeting Pages
+
+
+- - - - Sign In Future
+Sign in to gain permanent access to all accounts / meetings and edit them
+Update the availability table and have it automicaltly notify all others
+google calender intergration
+email people?
+
+- - - - Minor Tweaks
+Make font sizes more consistant
+Make footer font slightly smaller
+Tinker with the background colour	
