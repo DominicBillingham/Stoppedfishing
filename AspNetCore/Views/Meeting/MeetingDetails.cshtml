@@ -6,58 +6,67 @@
     var inviteLink = Url.ActionLink("Join", "Home", new { id = Model.Id });
 }
 
-
 <a href="@inviteLink">
 
-    <h1 class="fw-bold">@Model.Name - Click to join</h1>
+    <h1 class="fw-bold mb-0">@Model.Name - Click to join</h1>
 
 </a>
 
 
-<p class="mb-0">@meetingLink</p>
-<p class="smalltext">Share this link with your friends so they can join in the fun</p>
+<p class="mb-2">Invite Link - <span class="greytext">@meetingLink</span></p>
 
-<h2 class="mb-0">Users</h2>
-@foreach (var user in Model.Users)
+@if (Model.Users.Count() == 0)
 {
-    <span>@user.UserName, </span>
+
+} else
+{
+
+    <div class="mb-2">
+
+        <h2 class="mb-0">Participants</h2>
+        @foreach (var user in Model.Users)
+        {
+            <span>@user.UserName, </span>
+        }
+
+    </div>
+
+    <h2 class="mb-2">When Everyone's Free</h2>
+
+    <div id="TablePanel" class="row">
+
+        <table id="TimeTable" class="mb-4">
+
+            <thead>
+                <tr>
+                    <th>
+                        Monday
+                    </th>
+                    <th>
+                        Tuesday
+                    </th>
+                    <th>
+                        Wednesday
+                    </th>
+                    <th>
+                        Thursday
+                    </th>
+                    <th>
+                        Friday
+                    </th>
+                    <th>
+                        Saturday
+                    </th>
+                    <th>
+                        Sunday
+                    </th>
+                </tr>
+            </thead>
+
+        </table>
+
+    </div>
 }
-
-<h2 class="mb-0">Overlapping Free Time</h2>
-
-<div id="TablePanel" class="row">
-
-    <table id="TimeTable" class="mb-4">
-
-        <thead>
-            <tr>
-                <th>
-                    Monday
-                </th>
-                <th>
-                    Tuesday
-                </th>
-                <th>
-                    Wednesday
-                </th>
-                <th>
-                    Thursday
-                </th>
-                <th>
-                    Friday
-                </th>
-                <th>
-                    Saturday
-                </th>
-                <th>
-                    Sunday
-                </th>
-            </tr>
-        </thead>
-
-    </table>
-
-</div>
 
 @section Scripts {
 

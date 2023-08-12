@@ -33,6 +33,11 @@ main {
 
 }
 
+h1 {
+    font-size: 48px;
+}
+
+
 h2 {
     color: palevioletred;
 }
@@ -44,6 +49,10 @@ thead {
 .smalltext {
     color: #6c757d;
     font-size: 20px;
+}
+
+.greytext {
+    color: #6c757d;
 }
 
 .selected-block {
