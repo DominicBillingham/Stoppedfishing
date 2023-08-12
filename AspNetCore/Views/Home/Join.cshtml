@@ -60,17 +60,12 @@
     <script>
 
         //This code creates the table, and allows for the selection of cells
-
         var isMouseDown = false;
 
-        //Need to pass in meeting start hour and end hour!
-        var StartHour = $("#StartHourText").val()
-        var EndHour = $("#EndHourText").val()
+        var startHour = @Model.startHour;
+        var endHour = @Model.endHour;
 
-        StartHour = 7;
-        EndHour = 21;
-
-        for (let i = StartHour; i <= EndHour; i++) {
+        for (let i = startHour; i <= endHour; i++) {
 
             var row = document.createElement("tr");
 

@@ -15,7 +15,7 @@
 
 <p class="mb-2">Invite Link - <span class="greytext">@meetingLink</span></p>
 
-@if (Model.Users.Count() == -123213213)
+@if (Model.Users.Count() == 10)
 {
 
 } else
@@ -74,10 +74,10 @@
 
         var meetingId = '@Html.Raw(Model.Id)';
 
-        StartHour = @ViewBag.startHour;
-        EndHour = @ViewBag.endHour;
+        var startHour = @Model.startHour;
+        var endHour = @Model.endHour;
 
-        for (let i = StartHour; i <= EndHour; i++) {
+        for (let i = startHour; i <= endHour; i++) {
 
             var row = document.createElement("tr");
 

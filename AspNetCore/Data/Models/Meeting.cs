@@ -13,6 +13,5 @@ namespace AspNetCore.Data.Models
         [Range(0, 23)]
         public int endHour { get; set; }
         public ICollection<User> Users { get; set; }
-        public User Owner { get; set; }
     }
 }

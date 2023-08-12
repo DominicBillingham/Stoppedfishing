@@ -35,6 +35,8 @@ namespace StoppedFishing.Controllers
                 var meeting = new Meeting();
                 meeting.Id = GenerateToken();
                 meeting.Name = meetingName;
+                meeting.startHour = startHour;
+                meeting.endHour = endHour;
                 _context.Meetings.Add(meeting);
                 _context.SaveChanges();
 
