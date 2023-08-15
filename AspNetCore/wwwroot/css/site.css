@@ -70,11 +70,6 @@ button {
     background-color: rgb(255, 142, 142);
 }
 
-a {
-    text-decoration: none;
-    color: palevioletred;
-}
-
 table {
     border-spacing: 10px;
     border-collapse:separate;
@@ -110,13 +105,17 @@ table {
     cursor: cell;
 }
 
+a {
+    text-decoration: none;
+    color: palevioletred;
+}
+
 a:visited {
     color: firebrick;
 }
 
 a:hover {
     color: firebrick;
-    text-decoration: underline;
 }
 
 a:active {

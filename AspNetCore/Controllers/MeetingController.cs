@@ -36,7 +36,7 @@ namespace StoppedFishing.Controllers
                 meeting.Id = GenerateToken();
                 meeting.Name = meetingName;
                 meeting.startHour = startHour;
-                meeting.endHour = endHour;
+                meeting.endHour = endHour-1; // Hour blocks are represented as 0700-0800 and stored as the first hour, so -1 to account for this
                 _context.Meetings.Add(meeting);
                 _context.SaveChanges();
 
