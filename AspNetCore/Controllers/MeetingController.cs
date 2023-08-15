@@ -49,8 +49,12 @@ namespace StoppedFishing.Controllers
 
         }
 
-        public IActionResult AddAnonToMeeting()
+        public IActionResult AddAnonToMeeting(string userName, List<HourBlock> blocks)
         {
+
+
+
+
             return Ok();
         }
 
