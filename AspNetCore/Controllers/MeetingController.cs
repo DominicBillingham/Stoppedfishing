@@ -49,6 +49,11 @@ namespace StoppedFishing.Controllers
 
         }
 
+        public IActionResult AddAnonToMeeting()
+        {
+            return Ok();
+        }
+
         public IActionResult JoinMeeting(string id)
         {
             try

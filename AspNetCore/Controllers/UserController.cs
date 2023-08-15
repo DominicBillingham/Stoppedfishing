@@ -93,27 +93,18 @@ namespace AspNetCore.Controllers
                 var hourList = day.Select(x => x.Hour).ToList();
                 var length = 0;
 
-                if (hourList.Count == 1)
-                {
-                    var timeBlock = new TimeBlock();
-                    timeBlock.FinalHour = hourList.First();
-                    timeBlock.StartHour = hourList.First();
-                    timeBlock.Day = day.First().Day;
-                    blockList.Add(timeBlock);
-                    length = 0;
-                }
-
-                for (int i = 0; i < hourList.Count-1; i++)
+                for (int i = 0; i < hourList.Count; i++)
                 {
 
                     int current = hourList[i];
-                    int next = hourList[i + 1];
+                    int next = hourList.ElementAtOrDefault(i+1);
 
                     if (current + 1 == next)
                     {
+
                         length++;
-                    }
-                    else
+
+                    } else
                     {
                         var timeBlock = new TimeBlock();
                         timeBlock.FinalHour = current;
@@ -123,20 +114,6 @@ namespace AspNetCore.Controllers
                         length = 0;
                     }
 
-                    if (i == hourList.Count - 2)
-                    {
-
-                        var timeBlock = new TimeBlock();
-                        timeBlock.FinalHour = next;
-                        timeBlock.StartHour = next - length;
-                        timeBlock.Day = day.First().Day;
-                        blockList.Add(timeBlock);
-                        length = 0;
-
-                    }
-
-                    //use list.elementatordefault
-
 
                 }
 
@@ -145,63 +122,6 @@ namespace AspNetCore.Controllers
             return blockList;
 
         }
-
-        //public IActionResult LogIn(string userName)
-        //{
-
-        //    try
-        //    {
-        //        var user = _context.Users.FirstOrDefault(user => user.UserName == userName);
-
-        //        if (user == null)
-        //        {
-        //            return BadRequest("User not found!");
-        //        }
-
-        //        _userService.SetCurrentUserId(user.Id);
-
-        //        return Redirect("~/Home/Index");
-
-        //    } catch (Exception ex) 
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-        //public IActionResult SignOut()
-        //{
-
-        //    try
-        //    {
-        //        _userService.SignOutCurrentUser();
-        //        return Redirect("~/Home/Index");
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-
-        //public IActionResult GetCurrentUserName() {
-
-        //    try
-        //    {
-        //        var user = _userService.GetCurrentUser();
-        //        if (user == null)
-        //        {
-        //            return BadRequest("User not found");
-        //        }
-        //        return Ok(user.UserName);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
 
 
     }
