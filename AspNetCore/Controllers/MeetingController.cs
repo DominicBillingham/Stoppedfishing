@@ -5,6 +5,7 @@ using AspNetCore.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Microsoft.SqlServer.Server;
 using StoppedFishing.Data.Models;
 using StoppedFishing.Services;
 using static System.Net.WebRequestMethods;
@@ -27,16 +28,15 @@ namespace StoppedFishing.Controllers
             return View();
         }
 
-        public IActionResult CreateMeeting(string meetingName, int startHour, int endHour) {
+        public IActionResult CreateMeeting(Meeting meeting) {
 
             try
             {
-
-                var meeting = new Meeting();
                 meeting.Id = GenerateToken();
-                meeting.Name = meetingName;
-                meeting.startHour = startHour;
-                meeting.endHour = endHour-1; // Hour blocks are represented as 0700-0800 and stored as the first hour, so -1 to account for this
+                meeting.EndHour -= -1;
+
+                //DateTimeOffset dateTimeOffset = new DateTimeOffset(meeting.StartDay, TimeSpan.Zero);
+
                 _context.Meetings.Add(meeting);
                 _context.SaveChanges();
 
@@ -44,7 +44,7 @@ namespace StoppedFishing.Controllers
 
             } catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.ToString());
             }
 
         }

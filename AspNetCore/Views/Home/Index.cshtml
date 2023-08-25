@@ -5,31 +5,49 @@
 
         <div class="col-6">
 
-            <h2 class="fw-bold">1. Choose a magical meeting name</h2>
-            <input class="col-8" type="text" name="meetingName" placeholder="Movie Hangout" required />
+            <h2> 1. Choose a magical meeting name</h2>
+            <input class="col-8" type="text" name="Name" placeholder="Movie Hangout" required />
             <button id="MeetingNameBtn" class="rounded ml-4 col-3" type="button">Continue</button>
 
         </div>
 
     </div>
 
-    <div id="HourPanel" class="row mb-4 panel">
+    <div id="HourPanel" class="row mb-4">
 
         <div class="col-6">
 
-            <h2 class="fw-bold">2. Choose the hours you want meet between</h2>
+            <h2>2. Choose the hours you want meet between</h2>
             from:
-            <input class="col-3" name="startHour" type="number" placeholder="07" required min="0" max="24" />
+            <input class="col-3" name="StartHour" type="number" placeholder="07" required min="0" max="24" />
             &nbsp;&nbsp;&nbsp; to:
-            <input class="col-3" name="endHour" type="number" placeholder="18" required min="0" max="24" />
+            <input class="col-3" name="EndHour" type="number" placeholder="18" required min="0" max="24" />
             <button class="rounded ml-4 col-3" type="submit">Create Meeting</button>
+
+
+
+        </div>
+
+    </div>
+
+    <div id="DatePanel" class="row mb-4">
+
+        <div class="col-6">
+
+            <h2>3. Choose the dates you want meet between</h2>
+
+            from:
+            <input class="col-3" name="StartDay" type="date" />
+            &nbsp;&nbsp;&nbsp; to:
+            <input class="col-3" name="EndDay" type="date" />
+            <button class="rounded ml-4 col-3" type="submit">Create Meeting</button>
+
 
         </div>
 
     </div>
 
 </form>
-
 
 @section Scripts {
 

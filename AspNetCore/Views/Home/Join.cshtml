@@ -4,7 +4,7 @@
 
     <div class="col-6">
 
-        <h2 class="fw-bold">1. Choose an awesome username name</h2>
+        <h2>1. Choose an awesome username name</h2>
         <input id="UserNameInput" class="col-8" type="text" placeholder="John Smith" />
         <button id="CreateUserBtn" class="rounded ml-4 col-3">Continue</button>
 
@@ -14,7 +14,7 @@
 
 <div id="TablePanel" class="row panel">
 
-    <h2 class="fw-bold">2. Choose when you're down to hang</h2>
+    <h2>2. Choose when you're down to hang</h2>
 
     <table id="TimeTable" class="mb-4 select-table">
 
@@ -62,8 +62,8 @@
         //This code creates the table, and allows for the selection of cells
         var isMouseDown = false;
 
-        var startHour = @Model.startHour;
-        var endHour = @Model.endHour;
+        var startHour = @Model.StartHour;
+        var endHour = @Model.EndHour;
 
         for (let i = startHour; i <= endHour; i++) {
 

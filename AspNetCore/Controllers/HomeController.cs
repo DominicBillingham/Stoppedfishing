@@ -23,7 +23,6 @@ namespace AspNetCore.Controllers
         {
             try
             {
-                TimeZoneInfo localZone = TimeZoneInfo.Local;
                 return View();
 
             } catch (Exception ex)
