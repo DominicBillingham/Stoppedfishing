@@ -33,9 +33,11 @@ namespace StoppedFishing.Controllers
             try
             {
                 meeting.Id = GenerateToken();
-                meeting.EndHour -= -1;
+                meeting.EndHour -= 1; 
 
-                //DateTimeOffset dateTimeOffset = new DateTimeOffset(meeting.StartDay, TimeSpan.Zero);
+                TimeSpan currentOffset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                meeting.StartDay = new DateTimeOffset(meeting.StartDay.DateTime, currentOffset);
+                meeting.EndDay = new DateTimeOffset(meeting.EndDay.DateTime, currentOffset);
 
                 _context.Meetings.Add(meeting);
                 _context.SaveChanges();
